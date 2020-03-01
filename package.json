@@ -18,6 +18,7 @@
   "homepage": "https://github.com/youngscientists/ams-v4#readme",
   "dependencies": {
     "express": "^4.17.1",
+    "express-mailer": "^0.3.1",
     "firebase": "^7.9.3"
   }
 }
