@@ -1,4 +1,6 @@
 //import packages 
+const path = require('path');
+const fs = require('fs');
 const express = require('express');
 const bodyParser = require('body-parser');
 const cookieSession = require('cookie-session')
@@ -9,12 +11,8 @@ console.log('Running server')
 app.engine('view engine', require('ejs').renderFile);
 app.use(express.static('public'));
 
-app.post('/login', (req, res) => {
-    res.render(path.join(__dirname+'/views/index.ejs'), {submissions:names, requestedUser:submissions[0]});
-});
-
 app.get('*',function(req,res){
-    res.render(path.join(__dirname+'/views/login.ejs'));
+    res.render(path.join(__dirname+'/views/index.ejs'));
 });
 
 
