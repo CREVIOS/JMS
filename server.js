@@ -18,4 +18,5 @@ app.use(express.static('public'));
 app.use('/', webplatform);
 app.use('/submit', submissions);
 
-app.listen(process.env.PORT || 8080);
+let listener = app.listen(process.env.PORT || 8080);
+console.log('Listening on port ' + listener.address().port);

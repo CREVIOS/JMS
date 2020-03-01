@@ -1,10 +1,8 @@
 const path = require('path');
 const fs = require('fs');
-
 const express = require('express')
 const router = express.Router()
-
-console.log(__dirname);
+const firebase = require('./../api/firebase.js');
 
 // middleware that is specific to this router
 router.use(function timeLog (req, res, next) {
@@ -14,7 +12,8 @@ router.use(function timeLog (req, res, next) {
 })
 
 router.get('/articles', function (req, res) {
-    res.render(path.join(__dirname+'/../views/articles.ejs'));
+	let articles = firebase.getAllArticles();
+    res.render(path.join(__dirname+'/../views/articles.ejs'), {articles : articles});
 })
 
 router.get('/article_overview', function (req, res) {
