@@ -1,0 +1,24 @@
+{
+  "name": "ams-v4",
+  "version": "1.0.0",
+  "description": "The new AMS system for the YSJ",
+  "main": "server.js",
+  "scripts": {
+    "test": "npm start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/youngscientists/ams-v4.git"
+  },
+  "author": "YSJ Production",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/youngscientists/ams-v4/issues"
+  },
+  "homepage": "https://github.com/youngscientists/ams-v4#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "express-graphql": "^0.9.0",
+    "firebase": "^7.9.3"
+  }
+}
