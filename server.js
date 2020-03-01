@@ -1,8 +1,9 @@
+//import packages 
 const express = require('express');
-const app = express();
 const bodyParser = require('body-parser');
 const cookieSession = require('cookie-session')
 const crypto = require('crypto');
+const app = express();
 
 console.log('Running server')
 app.engine('view engine', require('ejs').renderFile);
