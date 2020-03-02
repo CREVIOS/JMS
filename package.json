@@ -1,6 +1,6 @@
 {
   "name": "ams-v4",
-  "version": "1.0.0",
+  "version": "4.0.0",
   "description": "The new AMS system for the YSJ",
   "main": "server.js",
   "scripts": {
