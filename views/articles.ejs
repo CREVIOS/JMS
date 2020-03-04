@@ -22,9 +22,9 @@
                 </a>
                 <hr class="sidebar-divider my-0">
                 <ul class="nav navbar-nav text-light" id="accordionSidebar">
-                    <li class="nav-item" role="presentation"><a class="nav-link active" href="index"><i class="fas fa-tachometer-alt"></i><span>The Journal</span></a></li>
+                    <li class="nav-item" role="presentation"><a class="nav-link" href="index"><i class="fas fa-tachometer-alt"></i><span>The Journal</span></a></li>
                     <li class="nav-item" role="presentation"><a class="nav-link" href="members"><i class="fas fa-user"></i><span>Members</span></a></li>
-                    <li class="nav-item" role="presentation"><a class="nav-link" href="articles"><i class="fas fa-table"></i><span>Articles</span></a><a class="nav-link" href="dept_info"><i class="fas fa-flag-checkered"></i><span>Department Overview</span></a></li>
+                    <li class="nav-item" role="presentation"><a class="nav-link active" href="articles"><i class="fas fa-table"></i><span>Articles</span></a><a class="nav-link" href="dept_info"><i class="fas fa-flag-checkered"></i><span>Department Overview</span></a></li>
                 </ul>
                 <div class="text-center d-none d-md-inline"><button class="btn rounded-circle border-0" id="sidebarToggle" type="button"></button></div>
             </div>
@@ -79,10 +79,10 @@
                             </li>
                             <div class="d-none d-sm-block topbar-divider"></div>
                             <li class="nav-item dropdown no-arrow" role="presentation">
-                                <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="#"><span class="d-none d-lg-inline mr-2 text-gray-600 small">User Name</span><img class="border rounded-circle img-profile" src="assets/img/avatars/avatar1.jpeg"></a>
+                                <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="#"><span class="d-none d-lg-inline mr-2 text-gray-600 small"><%=displayName%></span><img class="border rounded-circle img-profile" src="assets/img/avatars/avatar1.jpeg"></a>
                                     <div
                                         class="dropdown-menu shadow dropdown-menu-right animated--grow-in" role="menu"><a class="dropdown-item" role="presentation" href="#"><i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>&nbsp;Profile</a>
-                                        <div class="dropdown-divider"></div><a class="dropdown-item" role="presentation" href="#"><i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>&nbsp;Logout</a></div>
+                                        <div class="dropdown-divider"></div><a class="dropdown-item" role="presentation" href="logout"><i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>&nbsp;Logout</a></div>
                     </div>
                     </li>
                     </ul>
@@ -112,47 +112,22 @@
                                         <th>Type</th>
                                         <th>Editor(s)</th>
                                         <th>Submission date</th>
-                                        <th>Type</th>
+                                        <th>Status</th>
                                         <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>Some title</td>
-                                        <td>Biology</td>
-                                        <td>Original Research</td>
-                                        <td>John Seed</td>
-                                        <td>2008/11/28</td>
-                                        <td>Submitted</td>
-                                        <td><a class="btn btn-info btn-circle ml-1" role="button" href="article_overview.html"><i class="fas fa-info-circle text-white"></i></a></td>
+                                    <% for(let i = 0; i < articles.length; i++) { %>
+                                    <tr> <%= articles%>
+                                        <td> <%=articles[i].title%> </td>
+                                        <td> <%=articles[i].subject%> </td>
+                                        <td> <%=articles[i].type%> </td>
+                                        <td> <%=articles[i].mainEditor%> </td>
+                                        <td> <%=articles[i].timestamp%> </td>
+                                        <td> <%=articles[i].status%> </td>
+                                        <td> <a class="btn btn-info btn-circle ml-1" role="button" href="article_overview.html"><i class="fas fa-info-circle text-white"></i></a></td>
                                     </tr>
-                                    <tr>
-                                        <td>Title 2</td>
-                                        <td>CS</td>
-                                        <td>Article</td>
-                                        <td>Michael Kim</td>
-                                        <td>2009/10/09<br></td>
-                                        <td>Final Review</td>
-                                        <td><a class="btn btn-info btn-circle ml-1" role="button" href="article_overview.html"><i class="fas fa-info-circle text-white"></i></a></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Other title</td>
-                                        <td>Engineering</td>
-                                        <td>Original Research</td>
-                                        <td>Name Last</td>
-                                        <td>2009/01/12<br></td>
-                                        <td>Revisions Requested</td>
-                                        <td><a class="btn btn-info btn-circle ml-1" role="button" href="article_overview.html"><i class="fas fa-info-circle text-white"></i></a></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Another article title</td>
-                                        <td>Chemistry</td>
-                                        <td>Review Article</td>
-                                        <td>Elly Brooks</td>
-                                        <td>2012/10/13<br></td>
-                                        <td>Technical Review</td>
-                                        <td><a class="btn btn-info btn-circle ml-1" role="button" href="article_overview.html"><i class="fas fa-info-circle text-white"></i></a></td>
-                                    </tr>
+                                    <% } %>
                                     <tr></tr>
                                 </tbody>
                                 <tfoot>

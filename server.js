@@ -14,7 +14,14 @@ var submissions = require('./routers/submission.js');
 console.log('Running server')
 
 app.engine('view engine', require('ejs').renderFile);
+
 app.use(express.static('public'));
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cookieSession({
+  name: 'session',
+  keys: ['key1', 'key2']
+}))
+
 app.use('/', webplatform);
 app.use('/submit', submissions);
 
