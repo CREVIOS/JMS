@@ -261,7 +261,7 @@ module.exports = {
 function updateUserLastLogin(username) {
 	let currentDate = new Date();
 	let dd = currentDate.getDate();
-	let mm = currentDate.getMonth();
+	let mm = currentDate.getMonth() + 1;
 	let yyyy = currentDate.getFullYear();
 
 	let currentTime = dd + "-" + mm + "-" + yyyy;
