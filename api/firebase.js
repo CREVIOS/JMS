@@ -51,19 +51,20 @@ module.exports = {
   			res.render(path.join(__dirname+'/../views/error.ejs'));
 	    } else {
 	    	let tempUserData = doc.data();
-			let articlesRef = db.collection('articles');
+			let articlesRef = db.collection('articles' + tempUserData.department.replace(/\ /g, ""));
 			let allArticles = articlesRef.get()
 			.then(snapshot => {
 				let articlesRaw = [];
 			    snapshot.forEach(doc => {
 			    	let tempData = doc.data();
-					if ((typeof tempData.timestamp !== "object" || tempData.timestamp != "") &&
+					if ((typeof tempData.timestamp !== "object" && tempData.timestamp != "") &&
 						tempData.status != "Published" &&
 						tempData.status != "Failed Data Check" &&
 						tempData.status != "Rejected" &&
 						tempData.status != "DUPLICATE" &&
 						tempData.subject == tempUserData.department) {
 						tempData.id = doc.id;
+						tempData.color = colorForState(tempData.status);
 				    	articlesRaw.push(tempData);
 			    	}
 			    });
@@ -112,7 +113,7 @@ module.exports = {
 			let articlesRaw = [];
 		    snapshot.forEach(doc => {
 		    	let tempData = doc.data();
-				if ((typeof tempData.timestamp !== "Object" && tempData.timestamp != "") &&
+				if ((typeof tempData.timestamp !== "object" && tempData.timestamp != "") &&
 					tempData.status != "Published" &&
 					tempData.status != "Failed Data Check" &&
 					tempData.status != "Rejected" &&
@@ -123,7 +124,6 @@ module.exports = {
 
 			articlesRaw.sort(function(a,b){
 				let bDates = b.timestamp.split("-");
-				console.log(a.timestamp);
 				let aDates = a.timestamp.split("-");
 				let bDate = new Date(bDates[2], bDates[1]-1, bDates[0]);
 				let aDate = new Date(aDates[2], aDates[1]-1, aDates[0]);
@@ -157,7 +157,18 @@ module.exports = {
 	}
 };
 
-function isString (value) {
-return typeof value === 'string' || value instanceof String;
-}
 
+function colorForState(status) {
+	let colors = {
+		'Submitted': 'danger',
+		'Technical Review':	'primary',
+		'Passed Data Check': 'info',
+		'In Review': 'secondary',
+		'Revisions Requested': 'warning',
+		'Final Review': 'success',
+		'Ready to Publish': 'dark',
+		'Published': '6ABE71',
+		'Rejected': 'DE3428',
+		'Failed Data Check': 'E37735'};
+	return colors[status]
+};
