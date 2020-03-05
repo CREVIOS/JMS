@@ -16,47 +16,31 @@ function isAuthenticated(req) {
 router.use(function timeLog (req, res, next) {
   console.log('Time: ', Date.now());
   console.log('IP: ', req.headers['x-forwarded-for'] || req.connection.remoteAddress);
-  next();
+  	if (isAuthenticated(req)) {
+		next();
+	} else {
+    	res.render(path.join(__dirname+'/../views/login.ejs'));
+	}
 })
 
 router.get('/articles', function (req, res) {
-	if (isAuthenticated(req)) {
-		firebase.getAllArticles(req, res);
-	} else {
-    	res.render(path.join(__dirname+'/../views/login.ejs'));
-	}
+	firebase.getAllArticles(req, res);
 })
 
 router.get('/article_overview', function (req, res) {
-	if (isAuthenticated(req)) {
-		firebase.articleOverview(req, res);
-	} else {
-    	res.render(path.join(__dirname+'/../views/login.ejs'));
-	}
+	firebase.articleOverview(req, res);
 })
 
 router.get('/dept_info', function (req, res) {
-	if (isAuthenticated(req)) {
-		firebase.getDepartmentInfo(req, res);
-	} else {
-    	res.render(path.join(__dirname+'/../views/login.ejs'));
-	}
+	firebase.getDepartmentInfo(req, res);
 })
 
 router.get(['/', '/index'], function (req, res) {
-	if (isAuthenticated(req)) {
-		firebase.getOverview(req, res);
-	} else {
-    	res.render(path.join(__dirname+'/../views/login.ejs'));
-	}
+	firebase.getOverview(req, res);
 })
 
 router.get('/members', function (req, res) {
-	if (isAuthenticated(req)) {
-    	firebase.getAllUsers(req, res);
-	} else {
-    	res.render(path.join(__dirname+'/../views/login.ejs'));
-	}
+	firebase.getAllUsers(req, res);
 })
 
 router.get('/login', function (req, res) {

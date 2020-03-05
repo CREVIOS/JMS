@@ -1,6 +1,16 @@
 module.exports = {
 	timelineFor: function(status, timestamp, department) {
-		return {};
+		let percentages = {
+			'Submitted': '0',
+			'Passed Data Check': '5',
+			'In Review': '10',
+			'Revisions Requested': '35',
+			'Technical Review':	'50',
+			'Final Review': '70',
+			'Final Review Edits Requested': '90',
+			'Ready to Publish': '100',
+		};
+		return percentages[status];
 	},
 
 	colorForState: function(status) {

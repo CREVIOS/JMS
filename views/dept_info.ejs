@@ -118,11 +118,13 @@
                                                             <div class="text-uppercase text-<%= articles[i].color %> font-weight-bold text-xs mb-1"><span><%= articles[i].status %></span></div>
                                                             <div class="row no-gutters align-items-center">
                                                                 <div class="col-auto">
-                                                                    <div class="text-dark font-weight-bold h5 mb-0 mr-3"><span>0%</span></div>
+                                                                    <div class="text-dark font-weight-bold h5 mb-0 mr-3"><span><%=articles[i].timeline%>%</span></div>
                                                                 </div>
                                                                 <div class="col">
                                                                     <div class="progress progress-sm">
-                                                                        <div class="progress-bar bg-<%= articles[i].color %>" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"><span class="sr-only">0%</span></div>
+                                                                        <div class="progress-bar bg-<%=articles[i].color%>" aria-valuenow="<%= articles[i].timeline %>" aria-valuemin="0" aria-valuemax="100" style="width: <%=articles[i].timeline%>%;">
+                                                                            <span class="sr-only"><%=articles[i].timeline%>%</span>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                             </div>

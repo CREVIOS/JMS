@@ -64,9 +64,10 @@ module.exports = {
 						tempData.status != "Rejected" &&
 						tempData.status != "DUPLICATE" &&
 						tempData.subject == tempUserData.department) {
-						tempData.id = doc.id;
-						tempData.color = ams.colorForState(tempData.status);
-				    	articlesRaw.push(tempData);
+							tempData.id = doc.id;
+							tempData.timeline = ams.timelineFor(tempData.status, tempData.timestamp, tempData.department);
+							tempData.color = ams.colorForState(tempData.status);
+					    	articlesRaw.push(tempData);
 			    	}
 			    });
 
