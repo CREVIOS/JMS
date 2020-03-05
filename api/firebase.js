@@ -164,7 +164,6 @@ module.exports = {
 	articleOverview: function(req, res) {
 		let collection = "articles";
 		collection += req.query.dept.replace(/\ /g, "");
-		console.log(collection, req.query.id);
 		let userRef = db.collection(collection).doc(req.query.id);
 		let getDoc = userRef.get()
 	  	.then(doc => {
@@ -192,6 +191,37 @@ module.exports = {
 		collection += dept.replace(/\ /g, "");
 		let articles = db.collection(collection).doc(id);
 		let updateSingle = articles.update(toUpdate);
-		module.exports.articleOverview(req, res)
+		module.exports.articleOverview(req, res);
+	},
+
+	assignEditor: function(toUpdate, id, dept, req, res) {
+		let now = new Date();
+		let newEditor = {
+			email: toUpdate['editor'],
+			timestamp: now.toLocaleDateString()
+		};
+		let collection = "articles";
+		collection += dept.replace(/\ /g, "");
+
+		let articleRef = db.collection(collection).doc(id);
+		let getDoc = articleRef.get()
+	  	.then(doc => {
+	    	if (!doc.exists) {
+  				res.render(path.join(__dirname+'/../views/error.ejs'));
+	    	} else {
+	    		let tempData = doc.data();
+	    		let currentEditors = tempData.editors;
+	    		currentEditors.push(newEditor);
+				let articles = db.collection(collection).doc(id);
+				console.log(currentEditors);
+				let updateSingle = articles.update({editors: currentEditors});
+				module.exports.articleOverview(req, res);
+	    	}
+	  	})
+	  	.catch(err => {
+	    	console.log('Error getting document', err);
+			res.render(path.join(__dirname+'/../views/error.ejs'));
+	  	});
 	}
+
 };

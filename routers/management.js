@@ -76,5 +76,9 @@ router.post('/saveArticle', (req, res) => {
 	firebase.saveArticle(req.body, req.query.id, req.query.dept, req, res);
 });
 
+router.post('/assignEditor', (req, res) => {
+	firebase.assignEditor(req.body, req.query.id, req.query.dept, req, res);
+});
+
 
 module.exports = router
