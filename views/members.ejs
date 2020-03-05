@@ -109,82 +109,27 @@
                                     <tr>
                                         <th>Name</th>
                                         <th>Position</th>
-                                        <th>Location</th>
                                         <th>Active</th>
-                                        <th>Start date</th>
+                                        <th>Email</th>
                                         <th>Department</th>
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    <% for(let i = 0; i < staff.length; i++) { %>
                                     <tr>
-                                        <td><img class="rounded-circle mr-2" width="30" height="30" src="assets/img/avatars/avatar1.jpeg">Airi Satou</td>
-                                        <td>Editor</td>
-                                        <td>Tokyo</td>
-                                        <td><a class="btn btn-success btn-circle ml-1" role="button"><i class="fas fa-check text-white"></i></a></td>
-                                        <td>2008/11/28</td>
-                                        <td>Biology</td>
+                                        <td><img class="rounded-circle mr-2" width="30" height="30" src="assets/img/avatars/avatar1.jpeg"><%=staff[i].firstname%> <%=staff[i].lastname%></td>
+                                        <td><%=staff[i].role%></td>
+                                        <td><a class="btn btn-<%=staff[i].active%> btn-circle ml-1" role="button"><i class="fas fa-<%=staff[i].activeIcon%> text-white"></i></a></td>
+                                        <td><%=staff[i].email%></td>
+                                        <td><%=staff[i].department%></td>
                                     </tr>
-                                    <tr>
-                                        <td><img class="rounded-circle mr-2" width="30" height="30" src="assets/img/avatars/avatar2.jpeg">Angelica Ramos</td>
-                                        <td>Chief Editor</td>
-                                        <td>London</td>
-                                        <td><a class="btn btn-success btn-circle ml-1" role="button"><i class="fas fa-check text-white"></i></a></td>
-                                        <td>2009/10/09<br></td>
-                                        <td>Leaders</td>
-                                    </tr>
-                                    <tr>
-                                        <td><img class="rounded-circle mr-2" width="30" height="30" src="assets/img/avatars/avatar3.jpeg">Ashton Cox</td>
-                                        <td>Wordpress Architect</td>
-                                        <td>San Francisco</td>
-                                        <td><a class="btn btn-warning btn-circle ml-1" role="button"><i class="fas fa-exclamation-triangle text-white"></i></a></td>
-                                        <td>2009/01/12<br></td>
-                                        <td>Dev Team</td>
-                                    </tr>
-                                    <tr>
-                                        <td><img class="rounded-circle mr-2" width="30" height="30" src="assets/img/avatars/avatar4.jpeg">Bradley Greer</td>
-                                        <td>Software Engineer</td>
-                                        <td>London</td>
-                                        <td><a class="btn btn-success btn-circle ml-1" role="button"><i class="fas fa-check text-white"></i></a></td>
-                                        <td>2012/10/13<br></td>
-                                        <td>Dev Team</td>
-                                    </tr>
-                                    <tr>
-                                        <td><img class="rounded-circle mr-2" width="30" height="30" src="assets/img/avatars/avatar5.jpeg">Brenden Wagner</td>
-                                        <td>Editor</td>
-                                        <td>San Francisco</td>
-                                        <td><a class="btn btn-warning btn-circle ml-1" role="button"><i class="fas fa-exclamation-triangle text-white"></i></a></td>
-                                        <td>2011/06/07<br></td>
-                                        <td>Computer Science</td>
-                                    </tr>
+                                    <% } %>
                                     <tr></tr>
                                 </tbody>
                                 <tfoot>
-                                    <tr>
-                                        <td><strong>Name</strong></td>
-                                        <td><strong>Position</strong></td>
-                                        <td><strong>Office</strong></td>
-                                        <td><strong>Age</strong></td>
-                                        <td><strong>Start date</strong></td>
-                                        <td><strong>Salary</strong></td>
-                                    </tr>
+                                    <tr></tr>
                                 </tfoot>
                             </table>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6 align-self-center">
-                                <p id="dataTable_info" class="dataTables_info" role="status" aria-live="polite">Showing 1 to 10 of 27</p>
-                            </div>
-                            <div class="col-md-6">
-                                <nav class="d-lg-flex justify-content-lg-end dataTables_paginate paging_simple_numbers">
-                                    <ul class="pagination">
-                                        <li class="page-item disabled"><a class="page-link" href="#" aria-label="Previous"><span aria-hidden="true">«</span></a></li>
-                                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                        <li class="page-item"><a class="page-link" href="#" aria-label="Next"><span aria-hidden="true">»</span></a></li>
-                                    </ul>
-                                </nav>
-                            </div>
                         </div>
                     </div>
                 </div>

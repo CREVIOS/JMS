@@ -5,6 +5,8 @@ const fs = require('fs');
 const ams = require("./ams.js")
 const analytics = require("./analytics.js")
 
+const oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
+
 // Add the Firebase products that you want to use
 require("firebase/auth");
 require("firebase/firestore");
@@ -84,6 +86,20 @@ module.exports = {
 					let deptStaffRaw = [];
 				    snapshot.forEach(doc => {
 				    	let tempData = doc.data();
+						const firstDate = new Date();
+						let aDates = tempData.lastLogin.split("-");
+						let secondDate = new Date(aDates[2], aDates[1]-1, aDates[0]);
+
+						const diffDays = Math.round(Math.abs((firstDate - secondDate) / oneDay));
+						console.log(diffDays);
+						if (diffDays < 28) {
+							tempData.active = "success"
+							tempData.activeIcon = "check"
+						} else {
+							tempData.active = "warning"
+							tempData.activeIcon = "exclamation"
+						}
+
 				    	deptStaffRaw.push(tempData);
 				    });
 
@@ -116,7 +132,21 @@ module.exports = {
 
 	getAllUsers: function(req, res) {
 		// Add code to get all users
-	    res.render(path.join(__dirname+'/../views/members.ejs'), { displayName: req.session.authenticatedUser});
+		let staffRef = db.collection('staff').get()
+		.then(snapshot => {
+			let allStaff = [];
+		    snapshot.forEach(doc => {
+		    	let tempData = doc.data();
+		    	allStaff.push(tempData);
+		    });
+
+	    	res.render(path.join(__dirname+'/../views/members.ejs'), {displayName: req.session.authenticatedUser,
+																		staff: allStaff});
+		})
+		.catch(err => {
+			console.log('Error getting documents', err);
+			res.render(path.join(__dirname+'/../views/error.ejs'));
+		});
 	},
 
 	createArticle: function(object) {
@@ -213,7 +243,6 @@ module.exports = {
 	    		let currentEditors = tempData.editors;
 	    		currentEditors.push(newEditor);
 				let articles = db.collection(collection).doc(id);
-				console.log(currentEditors);
 				let updateSingle = articles.update({editors: currentEditors});
 				module.exports.articleOverview(req, res);
 	    	}
