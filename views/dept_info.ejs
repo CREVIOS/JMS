@@ -100,6 +100,7 @@
                                 <thead>
                                     <tr>
                                         <th>Article Title</th>
+                                        <th>Type</th>
                                         <th style="width: 500px;">Status</th>
                                         <th>Editor(s)</th>
                                         <th>Submission date</th>
@@ -110,6 +111,7 @@
                                     <% for (let i = 0; i < articles.length; i++) { %>
                                     <tr>
                                         <td><%= articles[i].title %></td>
+                                        <td><%= articles[i].type %></td>
                                         <td>
                                             <div class="card shadow border-left-<%= articles[i].color %> py-2">
                                                 <div class="card-body">
@@ -165,46 +167,16 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    <%for(let i = 0; i < staff.length; i++) {%>
                                     <tr>
-                                        <td><img class="rounded-circle mr-2" width="30" height="30" src="assets/img/avatars/avatar1.jpeg">Airi Satou</td>
+                                        <td><img class="rounded-circle mr-2" width="30" height="30" src="assets/img/avatars/avatar1.jpeg"><%=staff[i].firstname%> <%=staff[i].lastname%></td>
                                         <td>Some article</td>
-                                        <td>Tokyo</td>
-                                        <td><a class="btn btn-success btn-circle ml-1" role="button"><i class="fas fa-check text-white"></i></a></td>
-                                        <td>2008/11/28</td>
-                                        <td>abc@abc.com</td>
+                                        <td><%=staff[i].location%></td>
+                                        <td><a class="btn btn-<%=staff[i].active%> btn-circle ml-1" role="button"><i class="fas fa-<%=staff[i].activeIcon%> text-white"></i></a></td>
+                                        <td><%=staff[i].lastlogin%></td>
+                                        <td><%=staff[i].email%></td>
                                     </tr>
-                                    <tr>
-                                        <td><img class="rounded-circle mr-2" width="30" height="30" src="assets/img/avatars/avatar2.jpeg">Angelica Ramos</td>
-                                        <td>Article1, Article 2</td>
-                                        <td>London</td>
-                                        <td><a class="btn btn-success btn-circle ml-1" role="button"><i class="fas fa-check text-white"></i></a></td>
-                                        <td>2009/10/09<br></td>
-                                        <td>abc@gmail.com</td>
-                                    </tr>
-                                    <tr>
-                                        <td><img class="rounded-circle mr-2" width="30" height="30" src="assets/img/avatars/avatar3.jpeg">Ashton Cox</td>
-                                        <td>Article Title</td>
-                                        <td>San Francisco</td>
-                                        <td><a class="btn btn-warning btn-circle ml-1" role="button"><i class="fas fa-exclamation-triangle text-white"></i></a></td>
-                                        <td>2009/01/12<br></td>
-                                        <td>example@bnc.com</td>
-                                    </tr>
-                                    <tr>
-                                        <td><img class="rounded-circle mr-2" width="30" height="30" src="assets/img/avatars/avatar4.jpeg">Bradley Greer</td>
-                                        <td>Another article title</td>
-                                        <td>London</td>
-                                        <td><a class="btn btn-success btn-circle ml-1" role="button"><i class="fas fa-check text-white"></i></a></td>
-                                        <td>2012/10/13<br></td>
-                                        <td>demo@abc.com</td>
-                                    </tr>
-                                    <tr>
-                                        <td><img class="rounded-circle mr-2" width="30" height="30" src="assets/img/avatars/avatar5.jpeg">Brenden Wagner</td>
-                                        <td>An original bio research, Article 4</td>
-                                        <td>San Francisco</td>
-                                        <td><a class="btn btn-warning btn-circle ml-1" role="button"><i class="fas fa-exclamation-triangle text-white"></i></a></td>
-                                        <td>2011/06/07<br></td>
-                                        <td>example@email.com</td>
-                                    </tr>
+                                    <% } %>
                                     <tr></tr>
                                 </tbody>
                                 <tfoot>

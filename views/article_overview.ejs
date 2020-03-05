@@ -268,11 +268,11 @@
                                                 </thead>
                                                 <tbody>
                                                     <%for(let i = 0; i < article.editors.length; i++) { %>
-                                                    <tr>
-                                                        <td style="width: 222px;"><%= article.editors[i].name%></td>
-                                                        <td><%=article.editors[i].email%></td>
-                                                        <td><%=article.editors[i].timestamp%></td>
-                                                    </tr>
+                                                        <tr>
+                                                            <td style="width: 222px;"><%=article.editors[i].name%></td>
+                                                            <td><%=article.editors[i].email%></td>
+                                                            <td><%=article.editors[i].timestamp%></td>
+                                                        </tr>
                                                     <% } %>
                                                 </tbody>
                                             </table>

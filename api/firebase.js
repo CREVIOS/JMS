@@ -79,8 +79,7 @@ module.exports = {
 				  	return bDate - aDate;
 				});
 
-				let staffRef = db.collection('staff' + tempUserData.department.replace(/\ /g, ""));
-				let deptStaff = staffRef.get()
+				let staffRef = db.collection('staff').where("department", "==", tempUserData.department).get()
 				.then(snapshot => {
 					let deptStaffRaw = [];
 				    snapshot.forEach(doc => {
