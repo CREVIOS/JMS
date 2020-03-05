@@ -51,13 +51,12 @@ module.exports = {
 	getDepartmentInfo(req, res) {
 		let userRef = db.collection('staff').doc(req.session.authenticatedUser);
 		let getDoc = userRef.get()
-	  .then(doc => {
+	  	.then(doc => {
 	    if (!doc.exists) {
   			res.render(path.join(__dirname+'/../views/error.ejs'));
 	    } else {
 	    	let tempUserData = doc.data();
-			let articlesRef = db.collection('articles' + tempUserData.department.replace(/\ /g, ""));
-			let allArticles = articlesRef.get()
+			let articlesRef = db.collection('articles').where("subject", "==", tempUserData.department).get()
 			.then(snapshot => {
 				let articlesRaw = [];
 			    snapshot.forEach(doc => {
@@ -66,8 +65,7 @@ module.exports = {
 						tempData.status != "Published" &&
 						tempData.status != "Failed Data Check" &&
 						tempData.status != "Rejected" &&
-						tempData.status != "DUPLICATE" &&
-						tempData.subject == tempUserData.department) {
+						tempData.status != "DUPLICATE") {
 							tempData.id = doc.id;
 							tempData.timeline = ams.timelineFor(tempData.status, tempData.timestamp, tempData.department);
 							tempData.color = ams.colorForState(tempData.status);
@@ -195,9 +193,7 @@ module.exports = {
 	},
 
 	articleOverview: function(req, res) {
-		let collection = "articles";
-		collection += req.query.dept.replace(/\ /g, "");
-		let userRef = db.collection(collection).doc(req.query.id);
+		let userRef = db.collection("articles").doc(req.query.id);
 		let getDoc = userRef.get()
 	  	.then(doc => {
 	    	if (!doc.exists) {
@@ -220,9 +216,7 @@ module.exports = {
 	},
 
 	saveArticle: function(toUpdate, id, dept, req, res) {
-		let collection = "articles";
-		collection += dept.replace(/\ /g, "");
-		let articles = db.collection(collection).doc(id);
+		let articles = db.collection("articles").doc(id);
 		let updateSingle = articles.update(toUpdate);
 		module.exports.articleOverview(req, res);
 	},
@@ -233,10 +227,8 @@ module.exports = {
 			email: toUpdate['editor'],
 			timestamp: now.toLocaleDateString()
 		};
-		let collection = "articles";
-		collection += dept.replace(/\ /g, "");
 
-		let articleRef = db.collection(collection).doc(id);
+		let articleRef = db.collection("articles").doc(id);
 		let getDoc = articleRef.get()
 	  	.then(doc => {
 	    	if (!doc.exists) {
