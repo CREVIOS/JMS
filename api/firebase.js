@@ -228,8 +228,7 @@ module.exports = {
 			timestamp: now.toLocaleDateString()
 		};
 
-		let articleRef = db.collection("articles").doc(id);
-		let getDoc = articleRef.get()
+		let getDoc = db.collection("articles").doc(id).get()
 	  	.then(doc => {
 	    	if (!doc.exists) {
   				res.render(path.join(__dirname+'/../views/error.ejs'));
