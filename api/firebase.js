@@ -1,8 +1,9 @@
 // Google Firebase
 var firebase = require("firebase/app");
-var ams = require("./ams.js")
 const path = require('path');
 const fs = require('fs');
+const ams = require("./ams.js")
+const analytics = require("./analytics.js")
 
 // Add the Firebase products that you want to use
 require("firebase/auth");
@@ -91,7 +92,8 @@ module.exports = {
 	},
 
 	getOverview: function(req, res) {
-    	res.render(path.join(__dirname+'/../views/index.ejs'), { displayName: req.session.authenticatedUser});
+		let stats = analytics.summary();
+    	res.render(path.join(__dirname+'/../views/index.ejs'), { displayName: req.session.authenticatedUser, stats: stats});
 	},
 
 	getAllUsers: function(req, res) {

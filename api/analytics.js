@@ -1,22 +1,59 @@
 var fs = require('fs');
-const analyticsFilePath = "amsAnalytics.json"
+const analyticsFilePath = "./api/amsAnalytics.json"
 module.exports = {
 
 	summary: function() {
-		let summaryAnalytics = {
-			getAnalytics("submitted"),
-		};
-		return summaryAnalytics;
+		return getAnalytics(["submitted", "activeMembers", "articlesOnTime", "publishedThisMonth"]);
+	},
+
+	writeAnalytic: function(key, value, operation) {
+		let current = getAllAnalytics();
+		switch(operation) {
+			case "add":
+				current[key] += value;
+				break;
+			case "override":
+				current[key] = value;
+				break;
+			default:
+				console.log("Wrote invalid analytic: Key: ", key, " Value: ", value, "Operation:", operation);
+		}
+
+		let newJSON = JSON.stringify(current);
+		fs.writeFile(analyticsFilePath, newJSON, function (err) {
+		  if (err) throw err;
+		  console.log('Analytics updated!', key, value);
+		});
 	}
 };
 
-function writeAnalytics(param) {
-	fs.writeFile('mynewfile3.txt', 'This is my text', function (err) {
-	  if (err) throw err;
-	  console.log('Replaced!');
-	});
+const AnalyticsKeys = {
+		submitted : "submitted",
+		activeMembers: 'activeMembers',
+		articlesOnTime: 'articlesOnTime',
+		publishedThisMonth: 'publishedThisMonth'
 };
 
-function getAnalytics(param) {
-	  fs.readFile(analyticsFilePath, function(err, data) {
-}
+function getAnalytics(args) {
+	try {
+	  	let content = fs.readFileSync(analyticsFilePath, { encoding: 'utf8' });
+	  	let jsonObj = JSON.parse(content);
+	  	let extracted = {};
+	  	for (let i = 0; i < args.length; i++) {
+			extracted[args[i]] = jsonObj[args[i]];
+	  	};
+	  	return extracted;
+	} catch(err) {
+	  console.error(err);
+	}
+};
+
+function getAllAnalytics(args) {
+	try {
+	  	let content = fs.readFileSync(analyticsFilePath, { encoding: 'utf8' });
+	  	let jsonObj = JSON.parse(content);
+	  	return jsonObj;
+	} catch(err) {
+	  console.error(err);
+	}
+};

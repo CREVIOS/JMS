@@ -98,7 +98,7 @@
                                 <div class="row align-items-center no-gutters">
                                     <div class="col mr-2">
                                         <div class="text-uppercase text-primary font-weight-bold text-xs mb-1"><span>Submitted articles</span></div>
-                                        <div class="text-dark font-weight-bold h5 mb-0"><span>January:&nbsp;34</span></div>
+                                        <div class="text-dark font-weight-bold h5 mb-0"><span><%=stats.submitted%></span></div>
                                     </div>
                                     <div class="col-auto"><i class="fas fa-calendar fa-2x text-gray-300"></i></div>
                                 </div>
@@ -111,7 +111,7 @@
                                 <div class="row align-items-center no-gutters">
                                     <div class="col mr-2">
                                         <div class="text-uppercase text-success font-weight-bold text-xs mb-1"><span>active members</span></div>
-                                        <div class="text-dark font-weight-bold h5 mb-0"><span>87</span></div>
+                                        <div class="text-dark font-weight-bold h5 mb-0"><span><%=stats.activeMembers%></span></div>
                                     </div>
                                     <div class="col-auto"><i class="fas fa-child fa-2x text-gray-300"></i></div>
                                 </div>
@@ -126,7 +126,7 @@
                                         <div class="text-uppercase text-info font-weight-bold text-xs mb-1"><span>editing timeliness</span></div>
                                         <div class="row no-gutters align-items-center">
                                             <div class="col-auto">
-                                                <div class="text-dark font-weight-bold h5 mb-0 mr-3"><span>50%</span></div>
+                                                <div class="text-dark font-weight-bold h5 mb-0 mr-3"><span><%=stats.articlesOnTime%></span></div>
                                             </div>
                                             <div class="col">
                                                 <div class="progress progress-sm">
@@ -146,7 +146,7 @@
                                 <div class="row align-items-center no-gutters">
                                     <div class="col mr-2">
                                         <div class="text-uppercase text-warning font-weight-bold text-xs mb-1"><span>Published this month</span></div>
-                                        <div class="text-dark font-weight-bold h5 mb-0"><span>41</span></div>
+                                        <div class="text-dark font-weight-bold h5 mb-0"><span><%=stats.publishedThisMonth%></span></div>
                                     </div>
                                     <div class="col-auto"><i class="fas fa-rss fa-2x text-gray-300"></i></div>
                                 </div>
