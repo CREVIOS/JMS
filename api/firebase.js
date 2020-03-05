@@ -30,6 +30,7 @@ let db = firebase.firestore();
 
 module.exports = {
 	login: function(username, password, req, res) {
+		console.log(username, password);
 		firebase.auth().signInWithEmailAndPassword(username, password)
 		.catch(function(error) {
 		  	var errorCode = error.code;
@@ -41,6 +42,7 @@ module.exports = {
 		.then(function(user) {
 			if (user) {
 			    req.session.authenticatedUser = user.user.email;
+			    updateUserLastLogin(user.user.email);
 			    module.exports.getOverview(req, res);
 			}
 		});
@@ -254,6 +256,17 @@ module.exports = {
 	  	});
 	}
 
+};
+
+function updateUserLastLogin(username) {
+	let currentDate = new Date();
+	let dd = currentDate.getDate();
+	let mm = currentDate.getMonth();
+	let yyyy = currentDate.getFullYear();
+
+	let currentTime = dd + "-" + mm + "-" + yyyy;
+	let articles = db.collection("staff").doc(username);
+	let updateSingle = articles.update({lastLogin: currentTime});
 };
 
 
