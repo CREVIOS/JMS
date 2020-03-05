@@ -118,14 +118,14 @@
                                 </thead>
                                 <tbody>
                                     <% for(let i = 0; i < articles.length; i++) { %>
-                                    <tr> <%= articles%>
+                                    <tr>
                                         <td> <%=articles[i].title%> </td>
                                         <td> <%=articles[i].subject%> </td>
                                         <td> <%=articles[i].type%> </td>
                                         <td> <%=articles[i].mainEditor%> </td>
                                         <td> <%=articles[i].timestamp%> </td>
                                         <td> <%=articles[i].status%> </td>
-                                        <td> <a class="btn btn-info btn-circle ml-1" role="button" href="article_overview.html"><i class="fas fa-info-circle text-white"></i></a></td>
+                                        <td> <a class="btn btn-info btn-circle ml-1" role="button" href="article_overview.html?<%=articles[i].id%>"><i class="fas fa-info-circle text-white"></i></a></td>
                                     </tr>
                                     <% } %>
                                     <tr></tr>

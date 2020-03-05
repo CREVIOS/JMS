@@ -44,7 +44,43 @@ module.exports = {
 	},
 
 	getDepartmentInfo(req, res) {
-    	res.render(path.join(__dirname+'/../views/dept_info.ejs'), { displayName: req.session.authenticatedUser});
+		let userRef = db.collection('staff').doc(req.session.authenticatedUser);
+		let getDoc = userRef.get()
+	  .then(doc => {
+	    if (!doc.exists) {
+  			res.render(path.join(__dirname+'/../views/error.ejs'));
+	    } else {
+	    	let tempUserData = doc.data();
+			let articlesRef = db.collection('articles');
+			let allArticles = articlesRef.get()
+			.then(snapshot => {
+				let articlesRaw = [];
+			    snapshot.forEach(doc => {
+			    	let tempData = doc.data();
+					if ((typeof tempData.timestamp !== "object" || tempData.timestamp != "") &&
+						tempData.status != "Published" &&
+						tempData.status != "Failed Data Check" &&
+						tempData.status != "Rejected" &&
+						tempData.status != "DUPLICATE" &&
+						tempData.subject == tempUserData.department) {
+						tempData.id = doc.id;
+				    	articlesRaw.push(tempData);
+			    	}
+			    });
+    	    	res.render(path.join(__dirname+'/../views/dept_info.ejs'), {displayName: req.session.authenticatedUser,
+																			department: tempUserData.department,
+																			articles: articlesRaw});
+			})
+			.catch(err => {
+				console.log('Error getting documents', err);
+	    		res.render(path.join(__dirname+'/../views/error.ejs'));
+			});
+	    }
+	  })
+	  .catch(err => {
+	    console.log('Error getting document', err);
+		res.render(path.join(__dirname+'/../views/error.ejs'));
+	  });
 	},
 
 	logout: function(username, req, res) {
@@ -73,11 +109,27 @@ module.exports = {
 		let articlesRef = db.collection('articles');
 		let allArticles = articlesRef.get()
 		.then(snapshot => {
-			let articles = [];
+			let articlesRaw = [];
 		    snapshot.forEach(doc => {
-		    	articles.push(doc.data());
+		    	let tempData = doc.data();
+				if ((typeof tempData.timestamp !== "Object" && tempData.timestamp != "") &&
+					tempData.status != "Published" &&
+					tempData.status != "Failed Data Check" &&
+					tempData.status != "Rejected" &&
+					tempData.status != "DUPLICATE") {
+			    	articlesRaw.push(tempData);
+		    	}
 		    });
-    		res.render(path.join(__dirname+'/../views/articles.ejs'), { articles : articles,
+
+			articlesRaw.sort(function(a,b){
+				let bDates = b.timestamp.split("-");
+				console.log(a.timestamp);
+				let aDates = a.timestamp.split("-");
+				let bDate = new Date(bDates[2], bDates[1]-1, bDates[0]);
+				let aDate = new Date(aDates[2], aDates[1]-1, aDates[0]);
+			  	return bDate - aDate;
+			});
+    		res.render(path.join(__dirname+'/../views/articles.ejs'), { articles : articlesRaw,
     																	displayName: req.session.authenticatedUser });
 		})
 		.catch(err => {
@@ -86,7 +138,26 @@ module.exports = {
 		});
 	},
 
-	getArticleOverview: function(req, res) {
-    	res.render(path.join(__dirname+'/../views/article_overview.ejs'), { displayName: req.session.authenticatedUser});
+	articleOverview: function(req, res) {
+		let userRef = db.collection('articles').doc(req.query.id);
+		let getDoc = userRef.get()
+	  	.then(doc => {
+	    	if (!doc.exists) {
+  				res.render(path.join(__dirname+'/../views/error.ejs'));
+	    	} else {
+	    		let tempData = doc.data();
+	    		res.render(path.join(__dirname+'/../views/article_overview.ejs'), { displayName: req.session.authenticatedUser,
+	    																			article: tempData});
+	    	}
+	  	})
+	  	.catch(err => {
+	    	console.log('Error getting document', err);
+			res.render(path.join(__dirname+'/../views/error.ejs'));
+	  	});
 	}
 };
+
+function isString (value) {
+return typeof value === 'string' || value instanceof String;
+}
+

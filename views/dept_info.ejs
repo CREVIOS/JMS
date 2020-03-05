@@ -89,7 +89,7 @@
             </div>
             </nav>
             <div class="container-fluid">
-                <h3 class="text-dark mb-4">Biology Department</h3>
+                <h3 class="text-dark mb-4"><%=department%> Department</h3>
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
                         <h6 class="text-primary m-0 font-weight-bold">Work In Progress</h6>
@@ -107,14 +107,15 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    <% for (let i = 0; i < articles.length; i++) { %>
                                     <tr>
-                                        <td>Some title</td>
+                                        <td><%= articles[i].title %></td>
                                         <td>
                                             <div class="card shadow border-left-info py-2">
                                                 <div class="card-body">
                                                     <div class="row align-items-center no-gutters">
                                                         <div class="col mr-2">
-                                                            <div class="text-uppercase text-info font-weight-bold text-xs mb-1"><span>Submitted</span></div>
+                                                            <div class="text-uppercase text-info font-weight-bold text-xs mb-1"><span><%= articles[i].status %></span></div>
                                                             <div class="row no-gutters align-items-center">
                                                                 <div class="col-auto">
                                                                     <div class="text-dark font-weight-bold h5 mb-0 mr-3"><span>0%</span></div>
@@ -131,95 +132,11 @@
                                                 </div>
                                             </div>
                                         </td>
-                                        <td>John Seed</td>
-                                        <td>2008/11/28</td>
-                                        <td><a class="btn btn-info btn-circle ml-1" role="button" href="article_overview.html"><i class="fas fa-info-circle text-white"></i></a></td>
+                                        <td><%= articles[i].mainEditor %></td>
+                                        <td><%= articles[i].timestamp %></td>
+                                        <td><a class="btn btn-info btn-circle ml-1" role="button" href="article_overview?id=<%= articles[i].id%>"><i class="fas fa-info-circle text-white"></i></a></td>
                                     </tr>
-                                    <tr>
-                                        <td>Title 2</td>
-                                        <td>
-                                            <div class="card shadow border-left-warning py-2">
-                                                <div class="card-body">
-                                                    <div class="row align-items-center no-gutters">
-                                                        <div class="col mr-2">
-                                                            <div class="text-uppercase text-info font-weight-bold text-xs mb-1"><span class="text-warning">Technical review: Waiting editor</span></div>
-                                                            <div class="row no-gutters align-items-center">
-                                                                <div class="col-auto">
-                                                                    <div class="text-dark font-weight-bold h5 mb-0 mr-3"><span>50%</span></div>
-                                                                </div>
-                                                                <div class="col">
-                                                                    <div class="progress progress-sm">
-                                                                        <div class="progress-bar bg-warning" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%;"><span class="sr-only">50%</span></div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-auto"><i class="fas fa-clipboard-list fa-2x text-gray-300"></i></div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>Michael Kim</td>
-                                        <td>2009/10/09<br></td>
-                                        <td><a class="btn btn-info btn-circle ml-1" role="button" href="article_overview.html"><i class="fas fa-info-circle text-white"></i></a></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Other title</td>
-                                        <td>
-                                            <div class="card shadow border-left-danger py-2">
-                                                <div class="card-body">
-                                                    <div class="row align-items-center no-gutters">
-                                                        <div class="col mr-2">
-                                                            <div class="text-uppercase text-info font-weight-bold text-xs mb-1"><span class="text-danger">Revisions requested: Waiting editor</span></div>
-                                                            <div class="row no-gutters align-items-center">
-                                                                <div class="col-auto">
-                                                                    <div class="text-dark font-weight-bold h5 mb-0 mr-3"><span>50%</span></div>
-                                                                </div>
-                                                                <div class="col">
-                                                                    <div class="progress progress-sm">
-                                                                        <div class="progress-bar bg-danger" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%;"><span class="sr-only">50%</span></div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-auto"><i class="fas fa-clipboard-list fa-2x text-gray-300"></i></div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>Name Last</td>
-                                        <td>2009/01/12<br></td>
-                                        <td><a class="btn btn-info btn-circle ml-1" role="button" href="article_overview.html"><i class="fas fa-info-circle text-white"></i></a></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Another article title</td>
-                                        <td>
-                                            <div class="card shadow border-left-success py-2">
-                                                <div class="card-body">
-                                                    <div class="row align-items-center no-gutters">
-                                                        <div class="col mr-2">
-                                                            <div class="text-uppercase text-info font-weight-bold text-xs mb-1"><span class="text-success">Revisions requested</span></div>
-                                                            <div class="row no-gutters align-items-center">
-                                                                <div class="col-auto">
-                                                                    <div class="text-dark font-weight-bold h5 mb-0 mr-3"><span>50%</span></div>
-                                                                </div>
-                                                                <div class="col">
-                                                                    <div class="progress progress-sm">
-                                                                        <div class="progress-bar bg-success" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%;"><span class="sr-only">50%</span></div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-auto"><i class="fas fa-clipboard-list fa-2x text-gray-300"></i></div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>Elly Brooks</td>
-                                        <td>2012/10/13<br></td>
-                                        <td><a class="btn btn-info btn-circle ml-1" role="button" href="article_overview.html"><i class="fas fa-info-circle text-white"></i></a></td>
-                                    </tr>
-                                    <tr></tr>
+                                    <% } %>
                                 </tbody>
                                 <tfoot>
                                     <tr></tr>

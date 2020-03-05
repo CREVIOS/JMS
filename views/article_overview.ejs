@@ -89,7 +89,7 @@
             </div>
             </nav>
             <div class="container-fluid">
-                <h3 class="text-dark mb-4">This is the article title</h3>
+                <h3 class="text-dark mb-4"><%=article.title%></h3>
                 <div class="card shadow mb-5">
                     <div class="card-header py-3">
                         <p class="text-primary m-0 font-weight-bold">Article Timeline</p>
@@ -121,7 +121,7 @@
                                     <div class="card-body" style="padding: 0px 20px 0px 20px;">
                                         <div class="row align-items-center no-gutters">
                                             <div class="col mr-2">
-                                                <div class="text-uppercase text-info font-weight-bold text-xs mb-1"><span class="text-warning" style="color: rgb(204,54,63);">revisions requested: editor check</span></div>
+                                                <div class="text-uppercase text-info font-weight-bold text-xs mb-1"><span class="text-warning" style="color: rgb(204,54,63);"><%=article.status%></span></div>
                                                 <div class="row no-gutters align-items-center">
                                                     <div class="col-auto">
                                                         <div class="text-dark font-weight-bold h5 mb-0 mr-3"><span class="text-warning">20%</span></div>
@@ -157,14 +157,14 @@
                     <div class="col-lg-4">
                         <div class="card mb-3">
                             <div class="card-body text-center shadow"><i class="fa fa-file-word-o" style="height: 110px;width: 110px;font-size: 110px;margin: 20px;"></i>
-                                <div class="mb-3"><button class="btn btn-primary btn-sm" type="button">Go to Drive</button></div>
+                                <div class="mb-3"><a href="https://drive.google.com/drive/u/1/folders/<%=article.folder%>"><button class="btn btn-primary btn-sm" type="button">Go to Drive</button></a></div>
                             </div>
                         </div>
                         <div class="card shadow mb-4">
                             <div class="card-header py-3">
                                 <h6 class="text-primary font-weight-bold m-0">Comments</h6>
                             </div>
-                            <div class="card-body"><input type="text" style="width: 100%;height: 150px;margin: 0px 0px 15px 0px;"><a class="btn btn-success btn-icon-split" role="button" style="height: 33px;"><span class="text-white-50 icon"><i class="fas fa-check"></i></span><span class="text-white text">Save Comments</span></a></div>
+                            <div class="card-body"><input type="text" style="width: 100%;height: 150px;margin: 0px 0px 15px 0px;" value="<%= article.notes %>"><a class="btn btn-success btn-icon-split" role="button" style="height: 33px;"><span class="text-white-50 icon"><i class="fas fa-check"></i></span><span class="text-white text">Save Comments</span></a></div>
                         </div>
                     </div>
                     <div class="col-lg-8">
@@ -208,10 +208,10 @@
                                         <form>
                                             <div class="form-row">
                                                 <div class="col">
-                                                    <div class="form-group"><label for="username"><strong>Title</strong></label><input class="form-control" type="text" placeholder="Some title" name="username" style="height: 30px;"></div>
+                                                    <div class="form-group"><label for="username"><strong>Title</strong></label><input class="form-control" type="text" placeholder="<%= article.title %>" name="username" style="height: 30px;"></div>
                                                 </div>
                                                 <div class="col">
-                                                    <div class="form-group"><label for="email"><strong>Email Address</strong></label><input class="form-control" type="email" placeholder="user@example.com" name="email" style="height: 30px;"></div>
+                                                    <div class="form-group"><label for="email"><strong>Email Address</strong></label><input class="form-control" type="email" placeholder="<%= article.author %>" name="email" style="height: 30px;"></div>
                                                 </div>
                                             </div>
                                             <div class="form-row">
@@ -219,15 +219,15 @@
                                                     <div class="form-group"><label for="first_name"><strong>Author Name</strong><br></label><input class="form-control" type="text" placeholder="John" name="first_name" style="height: 30px;"></div>
                                                 </div>
                                                 <div class="col">
-                                                    <div class="form-group"><label for="last_name"><strong>Subject</strong></label><input class="form-control" type="text" placeholder="CS" name="last_name" style="height: 30px;"></div>
+                                                    <div class="form-group"><label for="last_name"><strong>Subject</strong></label><input class="form-control" type="text" placeholder="<%= article.subject %>" name="last_name" style="height: 30px;"></div>
                                                 </div>
                                             </div>
                                             <div class="form-row">
                                                 <div class="col">
-                                                    <div class="form-group"><label for="first_name"><strong>Date Submitted</strong><br></label><input class="form-control" type="text" placeholder="John" name="first_name" style="height: 30px;"></div>
+                                                    <div class="form-group"><label for="first_name"><strong>Date Submitted</strong><br></label><input class="form-control" type="text" placeholder="<%= article.timestamp %>" name="first_name" style="height: 30px;"></div>
                                                 </div>
                                                 <div class="col">
-                                                    <div class="form-group"><label for="last_name"><strong>Submission type</strong></label><input class="form-control" type="text" placeholder="CS" name="last_name" style="height: 30px;"></div>
+                                                    <div class="form-group"><label for="last_name"><strong>Submission type</strong></label><input class="form-control" type="text" placeholder="<%= article.type %>" name="last_name" style="height: 30px;"></div>
                                                 </div>
                                             </div>
                                             <div class="form-group"><button class="btn btn-primary btn-sm" type="submit" style="height: 26px;padding: 4px;">Save Changes</button></div>
@@ -249,16 +249,13 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
+                                                    <%for(let i = 0; i < article.editors.length; i++) { %>
                                                     <tr>
-                                                        <td style="width: 222px;">First Last</td>
-                                                        <td>namelastname@email.com</td>
-                                                        <td>01.01.2020</td>
+                                                        <td style="width: 222px;"><%= article.editors[i].name%></td>
+                                                        <td><%= article.editors[i].email%></td>
+                                                        <td><%= article.editors[i].timestamp%></td>
                                                     </tr>
-                                                    <tr>
-                                                        <td>Some Person</td>
-                                                        <td>email123@email.com</td>
-                                                        <td>03.01.2020</td>
-                                                    </tr>
+                                                    <% } %>
                                                 </tbody>
                                             </table>
                                         </div>
