@@ -69,7 +69,7 @@
                                         </a>
                                         <a class="d-flex align-items-center dropdown-item" href="#">
                                             <div class="mr-3">
-                                                <div class="bg-warning icon-circle"><i class="fas fa-exclamation-triangle text-white"></i></div>
+                                                <div class="bg-<%=article.color%> icon-circle"><i class="fas fa-exclamation-triangle text-white"></i></div>
                                             </div>
                                             <div><span class="small text-gray-500">December 2, 2019</span>
                                                 <p>Spending Alert: We've noticed unusually high spending for your account.</p>
@@ -92,21 +92,21 @@
                 <h3 class="text-dark mb-4"><%=article.title%></h3>
                 <div class="card shadow mb-5">
                     <div class="card-header py-3">
-                        <p class="text-primary m-0 font-weight-bold">Article Timeline</p>
+                        <p class="text-<%=article.color%> m-0 font-weight-bold">Article Timeline</p>
                     </div>
                     <div class="card-body" style="padding: 12px;">
-                        <div class="card shadow border-left-warning py-2" style="padding: 0px;">
+                        <div class="card shadow border-left-<%=article.color%> py-2" style="padding: 0px;">
                             <div class="card-body">
                                 <div class="row align-items-center no-gutters">
                                     <div class="col mr-2">
-                                        <div class="text-uppercase text-info font-weight-bold text-xs mb-1"><span class="text-warning">article timeline</span></div>
+                                        <div class="text-uppercase text-<%=article.color%> font-weight-bold text-xs mb-1"><span class="text-<%=article.color%>">article timeline</span></div>
                                         <div class="row no-gutters align-items-center">
                                             <div class="col-auto">
                                                 <div class="text-dark font-weight-bold h5 mb-0 mr-3"><span>50%</span></div>
                                             </div>
                                             <div class="col">
                                                 <div class="progress progress-sm">
-                                                    <div class="progress-bar bg-warning" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%;"><span class="sr-only">50%</span></div>
+                                                    <div class="progress-bar bg-<%=article.color%>" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%;"><span class="sr-only">50%</span></div>
                                                 </div>
                                             </div>
                                         </div>
@@ -117,18 +117,18 @@
                         </div>
                         <div class="row">
                             <div class="col-md-6" style="padding: 12px 0px 0px 12px;">
-                                <div class="card text-warning border-warning shadow border-left-warning py-2">
+                                <div class="card text-<%=article.color%> border-<%=article.color%> shadow border-left-<%=article.color%> py-2">
                                     <div class="card-body" style="padding: 0px 20px 0px 20px;">
                                         <div class="row align-items-center no-gutters">
                                             <div class="col mr-2">
-                                                <div class="text-uppercase text-info font-weight-bold text-xs mb-1"><span class="text-warning" style="color: rgb(204,54,63);"><%=article.status%></span></div>
+                                                <div class="text-uppercase text-<%=article.color%> font-weight-bold text-xs mb-1"><span class="text-<%=article.color%>" style="color: rgb(204,54,63);"><%=article.status%></span></div>
                                                 <div class="row no-gutters align-items-center">
                                                     <div class="col-auto">
-                                                        <div class="text-dark font-weight-bold h5 mb-0 mr-3"><span class="text-warning">20%</span></div>
+                                                        <div class="text-dark font-weight-bold h5 mb-0 mr-3"><span class="text-<%=article.color%>">20%</span></div>
                                                     </div>
                                                     <div class="col">
                                                         <div class="progress progress-sm">
-                                                            <div class="progress-bar bg-warning" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 20%;"><span class="sr-only">20%</span></div>
+                                                            <div class="progress-bar bg-<%=article.color%>" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 20%;"><span class="sr-only">20%</span></div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -164,7 +164,12 @@
                             <div class="card-header py-3">
                                 <h6 class="text-primary font-weight-bold m-0">Comments</h6>
                             </div>
-                            <div class="card-body"><input type="text" style="width: 100%;height: 150px;margin: 0px 0px 15px 0px;" value="<%= article.notes %>"><a class="btn btn-success btn-icon-split" role="button" style="height: 33px;"><span class="text-white-50 icon"><i class="fas fa-check"></i></span><span class="text-white text">Save Comments</span></a></div>
+                            <div class="card-body">
+                                <textarea style="width: 100%;height: 150px;margin: 0px 0px 15px 0px;"><%= article.notes %></textarea>
+                                <a class="btn btn-success btn-icon-split" role="button" style="height: 33px;">
+                                    <span class="text-white-50 icon"><i class="fas fa-check"></i></span><span class="text-white text">Save Comments</span>
+                                </a>
+                            </div>
                         </div>
                     </div>
                     <div class="col-lg-8">
@@ -216,7 +221,17 @@
                                             </div>
                                             <div class="form-row">
                                                 <div class="col">
-                                                    <div class="form-group"><label for="first_name"><strong>Author Name</strong><br></label><input class="form-control" type="text" placeholder="John" name="first_name" style="height: 30px;"></div>
+                                                    <div class="form-group"><label for="first_name"><strong>Status</strong><br></label>
+                                                        <select class="form-control form-control-sm custom-select custom-select-sm" style="width: 120px;margin: 0 20px 0 10px ;">
+                                                            <% for (let i = 0; i < statuses.length; i++) { %>
+                                                                <% if (article.status == statuses[i]) { %>
+                                                                    <option value="<%=statuses[i]%>" selected=""><%=statuses[i]%></option>
+                                                                <%} else {%>
+                                                                    <option value="<%=statuses[i]%>"><%=statuses[i]%></option>
+                                                                <%}%>
+                                                            <% } %>
+                                                        </select>
+                                                    </div>
                                                 </div>
                                                 <div class="col">
                                                     <div class="form-group"><label for="last_name"><strong>Subject</strong></label><input class="form-control" type="text" placeholder="<%= article.subject %>" name="last_name" style="height: 30px;"></div>

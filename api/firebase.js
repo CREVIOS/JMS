@@ -1,5 +1,6 @@
 // Google Firebase
 var firebase = require("firebase/app");
+var ams = require("./ams.js")
 const path = require('path');
 const fs = require('fs');
 
@@ -64,7 +65,7 @@ module.exports = {
 						tempData.status != "DUPLICATE" &&
 						tempData.subject == tempUserData.department) {
 						tempData.id = doc.id;
-						tempData.color = colorForState(tempData.status);
+						tempData.color = ams.colorForState(tempData.status);
 				    	articlesRaw.push(tempData);
 			    	}
 			    });
@@ -118,6 +119,8 @@ module.exports = {
 					tempData.status != "Failed Data Check" &&
 					tempData.status != "Rejected" &&
 					tempData.status != "DUPLICATE") {
+					tempData.id = doc.id;
+					tempData.color = ams.colorForState(tempData.status);
 			    	articlesRaw.push(tempData);
 		    	}
 		    });
@@ -139,15 +142,23 @@ module.exports = {
 	},
 
 	articleOverview: function(req, res) {
-		let userRef = db.collection('articles').doc(req.query.id);
+		let collection = "articles";
+		if (req.query.dept) {
+			collection += req.query.dept.replace(/\ /g, "");
+		}
+		let userRef = db.collection(collection).doc(req.query.id);
 		let getDoc = userRef.get()
 	  	.then(doc => {
 	    	if (!doc.exists) {
   				res.render(path.join(__dirname+'/../views/error.ejs'));
 	    	} else {
 	    		let tempData = doc.data();
+				tempData.timeline = ams.timelineFor(tempData.status, tempData.timestamp, tempData.department);
+				tempData.color = ams.colorForState(tempData.status);
+				var statuses = ams.articleStatuses();
 	    		res.render(path.join(__dirname+'/../views/article_overview.ejs'), { displayName: req.session.authenticatedUser,
-	    																			article: tempData});
+	    																			article: tempData,
+	    																			statuses: statuses });
 	    	}
 	  	})
 	  	.catch(err => {
@@ -155,20 +166,4 @@ module.exports = {
 			res.render(path.join(__dirname+'/../views/error.ejs'));
 	  	});
 	}
-};
-
-
-function colorForState(status) {
-	let colors = {
-		'Submitted': 'danger',
-		'Technical Review':	'primary',
-		'Passed Data Check': 'info',
-		'In Review': 'secondary',
-		'Revisions Requested': 'warning',
-		'Final Review': 'success',
-		'Ready to Publish': 'dark',
-		'Published': '6ABE71',
-		'Rejected': 'DE3428',
-		'Failed Data Check': 'E37735'};
-	return colors[status]
 };

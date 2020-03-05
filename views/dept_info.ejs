@@ -134,7 +134,7 @@
                                         </td>
                                         <td><%= articles[i].mainEditor %></td>
                                         <td><%= articles[i].timestamp %></td>
-                                        <td><a class="btn btn-<%= articles[i].color %> btn-circle ml-1" role="button" href="article_overview?id=<%= articles[i].id%>"><i class="fas fa-info %>-circle text-white"></i></a></td>
+                                        <td><a class="btn btn-<%= articles[i].color %> btn-circle ml-1" role="button" href="article_overview?id=<%= articles[i].id%>&dept=<%=articles[i].subject%>"><i class="fas fa-info %>-circle text-white"></i></a></td>
                                     </tr>
                                     <% } %>
                                 </tbody>

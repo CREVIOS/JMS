@@ -97,7 +97,14 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-6 text-nowrap">
-                                <div id="dataTable_length" class="dataTables_length" aria-controls="dataTable"><label>Filter:&nbsp;<select class="form-control form-control-sm custom-select custom-select-sm" style="width: 120px;margin: 0 20px 0 10px ;"><option value="" selected="">Any  Subject</option><option value="25">25</option><option value="50">50</option><option value="100">100</option></select><select class="form-control form-control-sm custom-select custom-select-sm" style="width: 114px;margin: 0 20px 0 10px;"><option value="" selected="">Any Status</option><option value="25">25</option><option value="50">50</option><option value="100">100</option></select><select class="form-control form-control-sm custom-select custom-select-sm" style="width: 114px;margin: 0 20px 0 10px;"><option value="" selected="">Any Type</option><option value="25">25</option><option value="50">50</option><option value="100">100</option></select>&nbsp;</label><label></label></div>
+                                <div id="dataTable_length" class="dataTables_length" aria-controls="dataTable">
+                                    <label>Filter:&nbsp;<select class="form-control form-control-sm custom-select custom-select-sm" style="width: 120px;margin: 0 20px 0 10px ;">
+                                        <option value="" selected="">Any  Subject</option>
+                                        <option value="25">25</option><option value="50">50</option>
+                                        <option value="100">100</option>
+                                    </select>
+                                    <select class="form-control form-control-sm custom-select custom-select-sm" style="width: 114px;margin: 0 20px 0 10px;">
+                                        <option value="" selected="">Any Status</option><option value="25">25</option><option value="50">50</option><option value="100">100</option></select><select class="form-control form-control-sm custom-select custom-select-sm" style="width: 114px;margin: 0 20px 0 10px;"><option value="" selected="">Any Type</option><option value="25">25</option><option value="50">50</option><option value="100">100</option></select>&nbsp;</label><label></label></div>
                             </div>
                             <div class="col-md-6">
                                 <div class="text-md-right dataTables_filter" id="dataTable_filter"><input type="search" class="form-control form-control-sm" aria-controls="dataTable" placeholder="Search" style="width: 100%;"><label></label></div>
@@ -124,8 +131,8 @@
                                         <td> <%=articles[i].type%> </td>
                                         <td> <%=articles[i].mainEditor%> </td>
                                         <td> <%=articles[i].timestamp%> </td>
-                                        <td> <%=articles[i].status%> </td>
-                                        <td> <a class="btn btn-info btn-circle ml-1" role="button" href="article_overview.html?<%=articles[i].id%>"><i class="fas fa-info-circle text-white"></i></a></td>
+                                        <td class="bg-<%=articles[i].color%> text-white"> <%=articles[i].status%> </td>
+                                        <td> <a class="btn btn-info btn-circle ml-1" role="button" href="article_overview?id=<%=articles[i].id%>"><i class="fas fa-info-circle text-white"></i></a></td>
                                     </tr>
                                     <% } %>
                                     <tr></tr>
