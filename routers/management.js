@@ -67,8 +67,13 @@ router.post('/login', (req, res) => {
 	firebase.login(req.body.email, req.body.password, req, res);
 });
 
-router.post('/logout', (req, res) => {
-	firebase.logout(req, res);
+router.get('/logout', (req, res) => {
+    req.session.authenticatedUser = undefined;
+	res.render(path.join(__dirname+'/../views/login.ejs'));
+});
+
+router.post('/saveArticle', (req, res) => {
+	firebase.saveArticle(req.body, req.query.id, req.query.dept, req, res);
 });
 
 

@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Profile - Brand</title>
+    <title>Article Overview - YSJ</title>
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
     <link rel="stylesheet" href="assets/fonts/fontawesome-all.min.css">
@@ -210,19 +210,19 @@
                                         <p class="text-primary m-0 font-weight-bold">Article info</p>
                                     </div>
                                     <div class="card-body" style="padding: 5px 20px 0px 20px;">
-                                        <form>
+                                        <form action="/saveArticle?id=<%=article.id%>&dept=<%=article.subject%>" method='POST'>
                                             <div class="form-row">
                                                 <div class="col">
-                                                    <div class="form-group"><label for="username"><strong>Title</strong></label><input class="form-control" type="text" placeholder="<%= article.title %>" name="username" style="height: 30px;"></div>
+                                                    <div class="form-group"><label for="title"><strong>Title</strong></label><input class="form-control" type="text" value="<%= article.title %>" name="title" style="height: 30px;"></div>
                                                 </div>
                                                 <div class="col">
-                                                    <div class="form-group"><label for="email"><strong>Email Address</strong></label><input class="form-control" type="email" placeholder="<%= article.author %>" name="email" style="height: 30px;"></div>
+                                                    <div class="form-group"><label for="author"><strong>Email Address</strong></label><input class="form-control" type="email" value="<%= article.author %>" name="author" style="height: 30px;"></div>
                                                 </div>
                                             </div>
                                             <div class="form-row">
                                                 <div class="col">
-                                                    <div class="form-group"><label for="first_name"><strong>Status</strong><br></label>
-                                                        <select class="form-control form-control-sm custom-select custom-select-sm" style="width: 120px;margin: 0 20px 0 10px ;">
+                                                    <div class="form-group"><label for="status"><strong>Status</strong><br></label>
+                                                        <select class="form-control form-control-sm custom-select custom-select-sm" style="width: 120px;margin: 0 20px 0 10px ;" name="status">
                                                             <% for (let i = 0; i < statuses.length; i++) { %>
                                                                 <% if (article.status == statuses[i]) { %>
                                                                     <option value="<%=statuses[i]%>" selected=""><%=statuses[i]%></option>
@@ -234,15 +234,15 @@
                                                     </div>
                                                 </div>
                                                 <div class="col">
-                                                    <div class="form-group"><label for="last_name"><strong>Subject</strong></label><input class="form-control" type="text" placeholder="<%= article.subject %>" name="last_name" style="height: 30px;"></div>
+                                                    <div class="form-group"><label for="subject"><strong>Subject</strong></label><input class="form-control" type="text" value="<%= article.subject %>" name="subject" style="height: 30px;"></div>
                                                 </div>
                                             </div>
                                             <div class="form-row">
                                                 <div class="col">
-                                                    <div class="form-group"><label for="first_name"><strong>Date Submitted</strong><br></label><input class="form-control" type="text" placeholder="<%= article.timestamp %>" name="first_name" style="height: 30px;"></div>
+                                                    <div class="form-group"><label for="timestamp"><strong>Date Submitted</strong><br></label><input class="form-control" type="text" value="<%= article.timestamp %>" name="timestamp" style="height: 30px;"></div>
                                                 </div>
                                                 <div class="col">
-                                                    <div class="form-group"><label for="last_name"><strong>Submission type</strong></label><input class="form-control" type="text" placeholder="<%= article.type %>" name="last_name" style="height: 30px;"></div>
+                                                    <div class="form-group"><label for="type"><strong>Submission type</strong></label><input class="form-control" type="text" value="<%= article.type %>" name="type" style="height: 30px;"></div>
                                                 </div>
                                             </div>
                                             <div class="form-group"><button class="btn btn-primary btn-sm" type="submit" style="height: 26px;padding: 4px;">Save Changes</button></div>

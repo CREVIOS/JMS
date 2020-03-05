@@ -38,9 +38,8 @@ module.exports = {
 		})
 		.then(function(user) {
 			if (user) {
-				console.log(user.user.email);
 			    req.session.authenticatedUser = user.user.email;
-		    	res.render(path.join(__dirname+'/../views/index.ejs'), { displayName: user.user.email });
+			    module.exports.getOverview(req, res);
 			}
 		});
 	},
@@ -70,9 +69,33 @@ module.exports = {
 				    	articlesRaw.push(tempData);
 			    	}
 			    });
-    	    	res.render(path.join(__dirname+'/../views/dept_info.ejs'), {displayName: req.session.authenticatedUser,
-																			department: tempUserData.department,
-																			articles: articlesRaw});
+
+    			articlesRaw.sort(function(a,b){
+					let bDates = b.timestamp.split("-");
+					let aDates = a.timestamp.split("-");
+					let bDate = new Date(bDates[2], bDates[1]-1, bDates[0]);
+					let aDate = new Date(aDates[2], aDates[1]-1, aDates[0]);
+				  	return bDate - aDate;
+				});
+
+				let staffRef = db.collection('staff' + tempUserData.department.replace(/\ /g, ""));
+				let deptStaff = staffRef.get()
+				.then(snapshot => {
+					let deptStaffRaw = [];
+				    snapshot.forEach(doc => {
+				    	let tempData = doc.data();
+				    	deptStaffRaw.push(tempData);
+				    });
+
+	    	    	res.render(path.join(__dirname+'/../views/dept_info.ejs'), {displayName: req.session.authenticatedUser,
+																				department: tempUserData.department,
+																				articles: articlesRaw,
+																				staff: deptStaffRaw});
+				})
+				.catch(err => {
+					console.log('Error getting documents', err);
+		    		res.render(path.join(__dirname+'/../views/error.ejs'));
+				});
 			})
 			.catch(err => {
 				console.log('Error getting documents', err);
@@ -84,11 +107,6 @@ module.exports = {
 	    console.log('Error getting document', err);
 		res.render(path.join(__dirname+'/../views/error.ejs'));
 	  });
-	},
-
-	logout: function(username, req, res) {
-	    req.session.authenticatedUser = undefined;
-    	res.render(path.join(__dirname+'/../views/login.ejs'), { displayName: req.session.authenticatedUser});
 	},
 
 	getOverview: function(req, res) {
@@ -145,9 +163,8 @@ module.exports = {
 
 	articleOverview: function(req, res) {
 		let collection = "articles";
-		if (req.query.dept) {
-			collection += req.query.dept.replace(/\ /g, "");
-		}
+		collection += req.query.dept.replace(/\ /g, "");
+		console.log(collection, req.query.id);
 		let userRef = db.collection(collection).doc(req.query.id);
 		let getDoc = userRef.get()
 	  	.then(doc => {
@@ -157,6 +174,7 @@ module.exports = {
 	    		let tempData = doc.data();
 				tempData.timeline = ams.timelineFor(tempData.status, tempData.timestamp, tempData.department);
 				tempData.color = ams.colorForState(tempData.status);
+				tempData.id = doc.id;
 				var statuses = ams.articleStatuses();
 	    		res.render(path.join(__dirname+'/../views/article_overview.ejs'), { displayName: req.session.authenticatedUser,
 	    																			article: tempData,
@@ -167,5 +185,13 @@ module.exports = {
 	    	console.log('Error getting document', err);
 			res.render(path.join(__dirname+'/../views/error.ejs'));
 	  	});
+	},
+
+	saveArticle: function(toUpdate, id, dept, req, res) {
+		let collection = "articles";
+		collection += dept.replace(/\ /g, "");
+		let articles = db.collection(collection).doc(id);
+		let updateSingle = articles.update(toUpdate);
+		module.exports.articleOverview(req, res)
 	}
 };

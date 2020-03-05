@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Table - Brand</title>
+    <title>Articles - YSJ</title>
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
     <link rel="stylesheet" href="assets/fonts/fontawesome-all.min.css">
@@ -132,7 +132,7 @@
                                         <td> <%=articles[i].mainEditor%> </td>
                                         <td> <%=articles[i].timestamp%> </td>
                                         <td class="bg-<%=articles[i].color%> text-white"> <%=articles[i].status%> </td>
-                                        <td> <a class="btn btn-info btn-circle ml-1" role="button" href="article_overview?id=<%=articles[i].id%>"><i class="fas fa-info-circle text-white"></i></a></td>
+                                        <td> <a class="btn btn-info btn-circle ml-1" role="button" href="article_overview?id=<%=articles[i].id%>&dept=<%=articles[i].subject%>"><i class="fas fa-info-circle text-white"></i></a></td>
                                     </tr>
                                     <% } %>
                                     <tr></tr>
