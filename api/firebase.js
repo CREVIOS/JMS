@@ -86,13 +86,7 @@ module.exports = {
 					let deptStaffRaw = [];
 				    snapshot.forEach(doc => {
 				    	let tempData = doc.data();
-						const firstDate = new Date();
-						let aDates = tempData.lastLogin.split("-");
-						let secondDate = new Date(aDates[2], aDates[1]-1, aDates[0]);
-
-						const diffDays = Math.round(Math.abs((firstDate - secondDate) / oneDay));
-						console.log(diffDays);
-						if (diffDays < 28) {
+						if (isActive(tempData.lastLogin)) {
 							tempData.active = "success"
 							tempData.activeIcon = "check"
 						} else {
@@ -137,6 +131,13 @@ module.exports = {
 			let allStaff = [];
 		    snapshot.forEach(doc => {
 		    	let tempData = doc.data();
+				if (isActive(tempData.lastLogin)) {
+					tempData.active = "success"
+					tempData.activeIcon = "check"
+				} else {
+					tempData.active = "warning"
+					tempData.activeIcon = "exclamation"
+				}
 		    	allStaff.push(tempData);
 		    });
 
@@ -254,3 +255,19 @@ module.exports = {
 	}
 
 };
+
+
+function isActive(lastLogin) {
+	if (typeof lastLogin !== "undefined") {
+		let firstDate = new Date();
+		let aDates = lastLogin.split("-");
+		let secondDate = new Date(aDates[2], aDates[1]-1, aDates[0]);
+
+		const diffDays = Math.round(Math.abs((firstDate - secondDate) / oneDay));
+		if (diffDays < 28) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+}
