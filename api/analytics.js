@@ -10,7 +10,7 @@ module.exports = {
 		let current = getAllAnalytics();
 		switch(operation) {
 			case "add":
-				current[key] += value;
+				current[key] = parseInt(current[key]) + value;
 				break;
 			case "override":
 				current[key] = value;
