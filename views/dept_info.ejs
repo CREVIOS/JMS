@@ -95,6 +95,26 @@
                         <h6 class="text-primary m-0 font-weight-bold">Work In Progress</h6>
                     </div>
                     <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6 text-nowrap">
+                                <div>
+                                    <label>Filter:&nbsp;
+                                    <select class="form-control form-control-sm custom-select custom-select-sm" style="width: 120px;margin: 0 20px 0 10px ;" id="statusesFilterSelector" onChange="filterBy()">
+                                        <option value="" selected="">Any Status</option>
+                                        <% for(let i = 0; i < statuses.length; i++) { %>
+                                            <option value="<%=statuses[i]%>"><%=statuses[i]%></option>
+                                        <% } %>
+                                    </select>
+                                    <select class="form-control form-control-sm custom-select custom-select-sm" style="width: 114px;margin: 0 20px 0 10px;" id="typesFilterSelector" onChange="filterBy()">
+                                        <option value="" selected="">Any Type</option>
+                                        <% for(let i = 0; i < types.length; i++) { %>
+                                            <option value="<%=types[i]%>"><%=types[i]%></option>
+                                        <% } %>
+                                    </select>
+                                    <input name="searchField" id="filterSearch" type="search" class="form-control-sm" aria-controls="dataTable" placeholder="Search" style="width: 100%;">
+                                    <label></label>
+                            </div>
+                        </div>
                         <div class="table-responsive table mt-2" id="dataTable" role="grid" aria-describedby="dataTable_info">
                             <table class="table dataTable my-0" id="dataTable">
                                 <thead>
@@ -109,15 +129,15 @@
                                 </thead>
                                 <tbody>
                                     <% for (let i = 0; i < articles.length; i++) { %>
-                                    <tr>
-                                        <td><%= articles[i].title %></td>
-                                        <td><%= articles[i].type %></td>
+                                    <tr class="articleRows">
+                                        <td class="filterSearch"><%= articles[i].title %></td>
+                                        <td class="typesFilterCol"><%= articles[i].type %></td>
                                         <td>
                                             <div class="card shadow border-left-<%= articles[i].color %> py-2">
                                                 <div class="card-body">
                                                     <div class="row align-items-center no-gutters">
                                                         <div class="col mr-2">
-                                                            <div class="text-uppercase text-<%= articles[i].color %> font-weight-bold text-xs mb-1"><span><%= articles[i].status %></span></div>
+                                                            <div class="text-uppercase text-<%= articles[i].color %> font-weight-bold text-xs mb-1"><span class="statusesFilterCol"><%= articles[i].status %></span></div>
                                                             <div class="row no-gutters align-items-center">
                                                                 <div class="col-auto">
                                                                     <div class="text-dark font-weight-bold h5 mb-0 mr-3"><span><%=articles[i].timeline%>%</span></div>
@@ -200,6 +220,76 @@
     <script src="assets/js/bs-init.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.js"></script>
     <script src="assets/js/theme.js"></script>
+    <script type="text/javascript">
+        // Filtering functions here
+        function filterBy() {
+            console.log("running");
+            let searchFilter = document.getElementById("filterSearch").value;
+            if (currentFilter("statusesFilterSelector") == "" &&
+                currentFilter("typesFilterSelector") == "" &&
+                searchFilter == "") {
+                    resetFilterRows();
+            } else {
+                let rows = document.getElementsByClassName("articleRows");
+                for (var i = rows.length - 1; i >= 0; i--) {
+                    rows[i].style.display = "none";
+                    if ( articleFiltered(rows[i], "statusesFilterCol", currentFilter("statusesFilterSelector")) &&
+                         articleFiltered(rows[i], "typesFilterCol", currentFilter("typesFilterSelector")) &&
+                         articleFilteredBySearch(rows[i])) {
+                        rows[i].style.display = "";
+                    }
+                }
+            }
+        };
+
+        function articleFilteredBySearch(row) {
+            console.log("runningasd");
+            let selectedFilter = document.getElementById("filterSearch").value;
+            if (selectedFilter == "") { return true; }
+            let rowInfo = row.getElementsByClassName("articleRowSearch");
+            let queryStr = "";
+            for (var j = rowInfo.length - 1; j >= 0; j--) {
+                queryStr += rowInfo[j].innerHTML + " ";
+            }
+            if (queryStr.toLowerCase().indexOf(selectedFilter.toLowerCase()) !== -1) {
+                return true;
+            } else {
+                return false;
+            }
+        };
+
+        function articleFiltered(row, column, filter) {
+            console.log("running");
+
+            let col = row.getElementsByClassName(column)[0].innerHTML;
+            if (filter == "" || col == filter) {
+                return true;
+            } else {
+                return false;
+            }
+        };
+
+        function currentFilter(selectorName) {
+                        console.log("running");
+
+            let deptFilter = document.getElementById(selectorName);
+            let filter = deptFilter.options[deptFilter.selectedIndex].value;
+            return filter;
+        };
+
+        function resetFilterRows() {
+                        console.log("running");
+
+            let rows = document.getElementsByClassName("articleRows");
+            for (var i = rows.length - 1; i >= 0; i--) {
+                rows[i].style.display = "";
+            }
+        };
+
+        document.getElementById("filterSearch").addEventListener('input', function() {
+            filterBy();
+        });
+    </script>
 </body>
 
 </html>

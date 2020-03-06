@@ -106,7 +106,6 @@ module.exports = {
 
 						let articlesAssignedString = "";
 						for (var i = articlesRaw.length - 1; i >= 0; i--) {
-							console.log(articlesRaw[i].status);
 							if (articlesRaw[i].status == "Revisions Requested" || articlesRaw[i].status == "Final Review Edits Requested") {
 								continue;
 							}
@@ -125,7 +124,9 @@ module.exports = {
 	    	    	res.render(path.join(__dirname+'/../views/dept_info.ejs'), {displayName: req.session.authenticatedUser,
 																				department: tempUserData.department,
 																				articles: articlesRaw,
-																				staff: deptStaffRaw});
+																				staff: deptStaffRaw,
+		    																	statuses: ams.articleStatuses(),
+    																			types: ams.articleTypes()});
 				})
 				.catch(err => {
 					console.log('Error getting documents', err);
