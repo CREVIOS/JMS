@@ -166,8 +166,9 @@ module.exports = {
 		    	allStaff.push(tempData);
 		    });
 
-	    	res.render(path.join(__dirname+'/../views/members.ejs'), {displayName: req.session.authenticatedUser,
-																		staff: allStaff});
+	    	res.render(path.join(__dirname+'/../views/members.ejs'), {	displayName: req.session.authenticatedUser,
+																		staff: allStaff,
+																		departments: ams.departments() });
 		})
 		.catch(err => {
 			console.log('Error getting documents', err);

@@ -42,5 +42,23 @@ module.exports = {
 			'Published',
 			'Rejected',
 			'Failed Data Check'];
+	},
+
+	departments: function() {
+		return [
+			"Astrophysics",
+			"Biochemistry",
+			"Biology",
+			"Chemistry",
+			"Computer Science",
+			"Engineering",
+			"Environmental & Earth Science",
+			"Mathematics",
+			"Medicine",
+			"Physics",
+			"Policy & Ethics",
+			"Production"
+		];
 	}
+
 };

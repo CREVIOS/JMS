@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Table - Brand</title>
+    <title>Members - YSJournal</title>
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
     <link rel="stylesheet" href="assets/fonts/fontawesome-all.min.css">
@@ -97,10 +97,21 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-6 text-nowrap">
-                                <div id="dataTable_length" class="dataTables_length" aria-controls="dataTable"><label>Show&nbsp;<select class="form-control form-control-sm custom-select custom-select-sm"><option value="10" selected="">10</option><option value="25">25</option><option value="50">50</option><option value="100">100</option></select>&nbsp;</label></div>
+                                <div id="dataTable_length" class="dataTables_length" aria-controls="dataTable"><label>Department: &nbsp;
+                                    <select id="deptFilterSelector" class="form-control form-control-sm custom-select custom-select-sm" onChange=filterByDept()>
+                                        <option value="" selected="">All</option>
+                                        <% for(let i = 0; i < departments.length; i++) { %>
+                                            <option value="<%=departments[i]%>"><%=departments[i]%></option>
+                                        <% } %>
+                                    </select>&nbsp;</label>
+                            </div>
                             </div>
                             <div class="col-md-6">
-                                <div class="text-md-right dataTables_filter" id="dataTable_filter"><label><input type="search" class="form-control form-control-sm" aria-controls="dataTable" placeholder="Search"></label></div>
+                                <div class="text-md-right dataTables_filter" id="dataTable_filter">
+                                    <label>
+                                        <input id="deptFilterSearch" type="search" class="form-control form-control-sm" aria-controls="dataTable" placeholder="Search">
+                                    </label>
+                                </div>
                             </div>
                         </div>
                         <div class="table-responsive table mt-2" id="dataTable" role="grid" aria-describedby="dataTable_info">
@@ -116,12 +127,12 @@
                                 </thead>
                                 <tbody>
                                     <% for(let i = 0; i < staff.length; i++) { %>
-                                    <tr>
-                                        <td><img class="rounded-circle mr-2" width="30" height="30" src="assets/img/avatars/avatar1.jpeg"><%=staff[i].firstname%> <%=staff[i].lastname%></td>
-                                        <td><%=staff[i].role%></td>
+                                    <tr class="userRow">
+                                        <td><img class="rounded-circle mr-2" width="30" height="30" src="assets/img/avatars/avatar1.jpeg"><a class="userRowSearch"><%=staff[i].firstname%> <%=staff[i].lastname%></a></td>
+                                        <td class="userRowSearch"><%=staff[i].role%></td>
                                         <td><a class="btn btn-<%=staff[i].active%> btn-circle ml-1" role="button"><i class="fas fa-<%=staff[i].activeIcon%> text-white"></i></a></td>
-                                        <td><%=staff[i].email%></td>
-                                        <td><%=staff[i].department%></td>
+                                        <td class="userRowSearch"><%=staff[i].email%></td>
+                                        <td class="userRowDept"><%=staff[i].department%></td>
                                     </tr>
                                     <% } %>
                                     <tr></tr>
@@ -147,6 +158,54 @@
     <script src="assets/js/bs-init.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.js"></script>
     <script src="assets/js/theme.js"></script>
+    <script type="text/javascript">
+        
+        // Filtering function here
+
+        function filterByDept() {
+            let deptFilter = document.getElementById("deptFilterSelector");
+            let selectedFilter = deptFilter.options[deptFilter.selectedIndex].value;
+            if (selectedFilter != "") {
+                let rows = document.getElementsByClassName("userRow");
+                for (var i = rows.length - 1; i >= 0; i--) {
+                    let usrDept = rows[i].getElementsByClassName("userRowDept")[0].innerHTML;
+                    if (usrDept != selectedFilter) {
+                        rows[i].style.display = "none";
+                    }
+                }
+            } else {
+                resetFilterRows();
+            }
+        };
+
+        function resetFilterRows() {
+            let rows = document.getElementsByClassName("userRow");
+            for (var i = rows.length - 1; i >= 0; i--) {
+                rows[i].style.display = "";
+            }
+
+        };
+
+        document.getElementById("deptFilterSearch").addEventListener('input', function() {
+            let selectedFilter = document.getElementById("deptFilterSearch").value;
+            if (selectedFilter != "") {
+                let rows = document.getElementsByClassName("userRow");
+                for (var i = rows.length - 1; i >= 0; i--) {
+                    let usrInfo = rows[i].getElementsByClassName("userRowSearch");
+                    let queryStr = "";
+                    for (var j = usrInfo.length - 1; j >= 0; j--) {
+                        queryStr += usrInfo[j].innerHTML + " ";
+                    }
+                    if (queryStr.toLowerCase().indexOf(selectedFilter.toLowerCase()) === -1) {
+                        rows[i].style.display = "none";
+                    }
+                }
+            } else {
+                resetFilterRows();
+            }
+        });
+
+    </script>
 </body>
 
 </html>
