@@ -59,6 +59,30 @@ module.exports = {
 			"Policy & Ethics",
 			"Production"
 		];
+	},
+
+	articleTypes: function() {
+		return ["Original Research",
+				"Review Article",
+				"Magazine Article",
+				"Blog"]
+	},
+
+	subjects: function() {
+		return [
+			"Astrophysics",
+			"Biochemistry",
+			"Biology",
+			"Chemistry",
+			"Computer Science",
+			"Engineering",
+			"Environmental & Earth Science",
+			"Mathematics",
+			"Medicine",
+			"Physics",
+			"Policy & Ethics",
+		];
+
 	}
 
 };

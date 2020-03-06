@@ -210,7 +210,10 @@ module.exports = {
 			  	return bDate - aDate;
 			});
     		res.render(path.join(__dirname+'/../views/articles.ejs'), { articles : articlesRaw,
-    																	displayName: req.session.authenticatedUser });
+    																	displayName: req.session.authenticatedUser,
+    																	statuses: ams.articleStatuses(),
+    																	types: ams.articleTypes(),
+    																	subjects: ams.subjects()});
 		})
 		.catch(err => {
 			console.log('Error getting documents', err);

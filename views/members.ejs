@@ -98,7 +98,7 @@
                         <div class="row">
                             <div class="col-md-6 text-nowrap">
                                 <div id="dataTable_length" class="dataTables_length" aria-controls="dataTable"><label>Department: &nbsp;
-                                    <select id="deptFilterSelector" class="form-control form-control-sm custom-select custom-select-sm" onChange=filterByDept()>
+                                    <select id="deptFilterSelector" class="form-control form-control-sm custom-select custom-select-sm" onChange=filterBy()>
                                         <option value="" selected="">All</option>
                                         <% for(let i = 0; i < departments.length; i++) { %>
                                             <option value="<%=departments[i]%>"><%=departments[i]%></option>
@@ -109,7 +109,7 @@
                             <div class="col-md-6">
                                 <div class="text-md-right dataTables_filter" id="dataTable_filter">
                                     <label>
-                                        <input id="deptFilterSearch" type="search" class="form-control form-control-sm" aria-controls="dataTable" placeholder="Search">
+                                        <input id="filterSearch" type="search" class="form-control form-control-sm" aria-controls="dataTable" placeholder="Search">
                                     </label>
                                 </div>
                             </div>
@@ -159,23 +159,52 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.js"></script>
     <script src="assets/js/theme.js"></script>
     <script type="text/javascript">
-        
-        // Filtering function here
-
-        function filterByDept() {
-            let deptFilter = document.getElementById("deptFilterSelector");
-            let selectedFilter = deptFilter.options[deptFilter.selectedIndex].value;
-            if (selectedFilter != "") {
+        // Filtering functions here
+        function filterBy() {
+            let searchFilter = document.getElementById("filterSearch").value;
+            if (currentFilter("deptFilterSelector") == "" &&
+                searchFilter == "") {
+                    resetFilterRows();
+            } else {
                 let rows = document.getElementsByClassName("userRow");
                 for (var i = rows.length - 1; i >= 0; i--) {
-                    let usrDept = rows[i].getElementsByClassName("userRowDept")[0].innerHTML;
-                    if (usrDept != selectedFilter) {
-                        rows[i].style.display = "none";
+                    rows[i].style.display = "none";
+                    if ( articleFiltered(rows[i], "userRowDept", currentFilter("deptFilterSelector")) &&
+                         articleFilteredBySearch(rows[i])) {
+                        rows[i].style.display = "";
                     }
                 }
-            } else {
-                resetFilterRows();
             }
+        };
+
+        function articleFilteredBySearch(row) {
+            let selectedFilter = document.getElementById("filterSearch").value;
+            if (selectedFilter == "") { return true; }
+            let rowInfo = row.getElementsByClassName("userRowSearch");
+            let queryStr = "";
+            for (var j = rowInfo.length - 1; j >= 0; j--) {
+                queryStr += rowInfo[j].innerHTML + " ";
+            }
+            if (queryStr.toLowerCase().indexOf(selectedFilter.toLowerCase()) !== -1) {
+                return true;
+            } else {
+                return false;
+            }
+        };
+
+        function articleFiltered(row, column, filter) {
+            let col = row.getElementsByClassName(column)[0].innerHTML;
+            if (filter == "" || col == filter) {
+                return true;
+            } else {
+                return false;
+            }
+        };
+
+        function currentFilter(selectorName) {
+            let deptFilter = document.getElementById(selectorName);
+            let filter = deptFilter.options[deptFilter.selectedIndex].value;
+            return filter;
         };
 
         function resetFilterRows() {
@@ -183,28 +212,11 @@
             for (var i = rows.length - 1; i >= 0; i--) {
                 rows[i].style.display = "";
             }
-
         };
 
-        document.getElementById("deptFilterSearch").addEventListener('input', function() {
-            let selectedFilter = document.getElementById("deptFilterSearch").value;
-            if (selectedFilter != "") {
-                let rows = document.getElementsByClassName("userRow");
-                for (var i = rows.length - 1; i >= 0; i--) {
-                    let usrInfo = rows[i].getElementsByClassName("userRowSearch");
-                    let queryStr = "";
-                    for (var j = usrInfo.length - 1; j >= 0; j--) {
-                        queryStr += usrInfo[j].innerHTML + " ";
-                    }
-                    if (queryStr.toLowerCase().indexOf(selectedFilter.toLowerCase()) === -1) {
-                        rows[i].style.display = "none";
-                    }
-                }
-            } else {
-                resetFilterRows();
-            }
+        document.getElementById("filterSearch").addEventListener('input', function() {
+            filterBy();
         });
-
     </script>
 </body>
 
