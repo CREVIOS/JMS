@@ -48,7 +48,17 @@ module.exports = {
 		});
 	},
 
-	getDepartmentInfo(req, res) {
+	resetPassword: function(email, req, res) {
+		var auth = firebase.auth();
+
+		auth.sendPasswordResetEmail(email).then(function() {
+  			res.render(path.join(__dirname+'/../views/login.ejs'));
+		}).catch(function(error) {
+  			res.render(path.join(__dirname+'/../views/error.ejs'), {error: error});
+		});
+	},
+
+	getDepartmentInfo: function(req, res) {
 		let userRef = db.collection('staff').doc(req.session.authenticatedUser);
 		let getDoc = userRef.get()
 	  	.then(doc => {

@@ -91,5 +91,13 @@ router.post('/assignEditor', (req, res) => {
 	}
 });
 
+router.post('/resetPassword', (req, res) => {
+	firebase.resetPassword(req.body.email, req, res);
+});
+
+router.get('/resetPassword', (req, res) => {
+	req.session.authenticatedUser = undefined;
+	res.render(path.join(__dirname+'/../views/resetPassword.ejs'));
+});
 
 module.exports = router
