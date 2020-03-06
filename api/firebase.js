@@ -59,6 +59,7 @@ module.exports = {
 	},
 
 	getDepartmentInfo: function(req, res) {
+
 		let userRef = db.collection('staff').doc(req.session.authenticatedUser);
 		let getDoc = userRef.get()
 	  	.then(doc => {
@@ -66,7 +67,16 @@ module.exports = {
   			res.render(path.join(__dirname+'/../views/error.ejs'));
 	    } else {
 	    	let tempUserData = doc.data();
-			let articlesRef = db.collection('articles').where("subject", "==", tempUserData.department).get()
+	    	let dept = tempUserData.departments[0];
+	    	if (req.query.department != "") {
+	    		for (var i = tempUserData.departments.length - 1; i >= 0; i--) {
+	    			if (tempUserData.departments[i] == req.query.department) {
+	    				dept = req.query.department;
+	    				break;
+	    			}
+	    		}
+	    	}
+			let articlesRef = db.collection('articles').where("subject", "==", dept).get()
 			.then(snapshot => {
 				let articlesRaw = [];
 			    snapshot.forEach(doc => {
@@ -77,7 +87,7 @@ module.exports = {
 						tempData.status != "Rejected" &&
 						tempData.status != "DUPLICATE") {
 							tempData.id = doc.id;
-							tempData.timeline = ams.timelineFor(tempData.status, tempData.timestamp, tempData.department);
+							tempData.timeline = ams.timelineFor(tempData.status, tempData.timestamp, dept);
 							tempData.color = ams.colorForState(tempData.status);
 					    	articlesRaw.push(tempData);
 			    	}
@@ -91,11 +101,16 @@ module.exports = {
 				  	return bDate - aDate;
 				});
 
-				let staffRef = db.collection('staff').where("department", "==", tempUserData.department).get()
+				let staffRef = db.collection('staff').where("departments", "array-contains", dept).get()
 				.then(snapshot => {
 					let deptStaffRaw = [];
+					let senior = "";
 				    snapshot.forEach(doc => {
 				    	let tempData = doc.data();
+				    	if (tempData.authorizationLevel >= 3) {
+				    		senior += tempData.firstname + " " + tempData.lastname + " ";
+				    	}
+
 						if (isActive(tempData.lastLogin)) {
 							tempData.active = "success";
 							tempData.activeIcon = "check";
@@ -122,11 +137,13 @@ module.exports = {
 				    });
 
 	    	    	res.render(path.join(__dirname+'/../views/dept_info.ejs'), {displayName: req.session.authenticatedUser,
-																				department: tempUserData.department,
+																				department: dept,
 																				articles: articlesRaw,
 																				staff: deptStaffRaw,
 		    																	statuses: ams.articleStatuses(),
-    																			types: ams.articleTypes()});
+    																			types: ams.articleTypes(),
+    																			departments: tempUserData.departments,
+    																			senior: senior});
 				})
 				.catch(err => {
 					console.log('Error getting documents', err);
@@ -230,7 +247,7 @@ module.exports = {
   				res.render(path.join(__dirname+'/../views/error.ejs'));
 	    	} else {
 	    		let tempData = doc.data();
-				tempData.timeline = ams.timelineFor(tempData.status, tempData.timestamp, tempData.department);
+				tempData.timeline = ams.timelineFor(tempData.status, tempData.timestamp, tempData.subject);
 				tempData.color = ams.colorForState(tempData.status);
 				tempData.id = doc.id;
 				var statuses = ams.articleStatuses();

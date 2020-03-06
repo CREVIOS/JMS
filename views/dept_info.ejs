@@ -90,6 +90,17 @@
             </nav>
             <div class="container-fluid">
                 <h3 class="text-dark mb-4"><%=department%> Department</h3>
+                <h6>Senior Editor: <%=senior%></h5>
+                <select class="form-control form-control-sm custom-select custom-select-sm" style="width: 200px;margin: 0 0 20px 0 ;" id="deptChoice" onchange="location = this.value;">
+                    <% for(let i = 0; i < departments.length; i++) { %>
+                        <% if (department == departments[i]) {%>
+                            <option value="dept_info?department=<%=departments[i]%>" selected=""><%=departments[i]%></option>
+                        <%} else {%>
+                            <option value="dept_info?department=<%=departments[i]%>"><%=departments[i]%></option>
+                        <%}%>
+                    <% } %>
+                </select>
+
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
                         <h6 class="text-primary m-0 font-weight-bold">Work In Progress</h6>
