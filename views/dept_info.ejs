@@ -97,7 +97,7 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-6 text-nowrap">
-                                <div>
+                                <div id="dataTable_length" class="dataTables_length" aria-controls="dataTable">
                                     <label>Filter:&nbsp;
                                     <select class="form-control form-control-sm custom-select custom-select-sm" style="width: 120px;margin: 0 20px 0 10px ;" id="statusesFilterSelector" onChange="filterBy()">
                                         <option value="" selected="">Any Status</option>
@@ -110,9 +110,13 @@
                                         <% for(let i = 0; i < types.length; i++) { %>
                                             <option value="<%=types[i]%>"><%=types[i]%></option>
                                         <% } %>
-                                    </select>
-                                    <input name="searchField" id="filterSearch" type="search" class="form-control-sm" aria-controls="dataTable" placeholder="Search" style="width: 100%;">
+                                    </select>&nbsp;</label><label></label></div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="text-md-right dataTables_filter" id="dataTable_filter">
+                                    <input id="filterSearch" type="search" class="form-control form-control-sm" aria-controls="dataTable" placeholder="Search" style="width: 100%;">
                                     <label></label>
+                                </div>
                             </div>
                         </div>
                         <div class="table-responsive table mt-2" id="dataTable" role="grid" aria-describedby="dataTable_info">
@@ -130,7 +134,7 @@
                                 <tbody>
                                     <% for (let i = 0; i < articles.length; i++) { %>
                                     <tr class="articleRows">
-                                        <td class="filterSearch"><%= articles[i].title %></td>
+                                        <td class="articleRowSearch"><%= articles[i].title %></td>
                                         <td class="typesFilterCol"><%= articles[i].type %></td>
                                         <td>
                                             <div class="card shadow border-left-<%= articles[i].color %> py-2">
