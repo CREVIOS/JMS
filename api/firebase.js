@@ -97,13 +97,28 @@ module.exports = {
 				    snapshot.forEach(doc => {
 				    	let tempData = doc.data();
 						if (isActive(tempData.lastLogin)) {
-							tempData.active = "success"
-							tempData.activeIcon = "check"
+							tempData.active = "success";
+							tempData.activeIcon = "check";
 						} else {
-							tempData.active = "warning"
-							tempData.activeIcon = "exclamation"
+							tempData.active = "warning";
+							tempData.activeIcon = "exclamation";
 						}
 
+						let articlesAssignedString = "";
+						for (var i = articlesRaw.length - 1; i >= 0; i--) {
+							console.log(articlesRaw[i].status);
+							if (articlesRaw[i].status == "Revisions Requested" || articlesRaw[i].status == "Final Review Edits Requested") {
+								continue;
+							}
+
+							for (var j = articlesRaw[i].editors.length - 1; j >= 0; j--) {
+								if (articlesRaw[i].editors[j].email == tempData.email) {
+									articlesAssignedString += "\"" + articlesRaw[i].title + "\" ";
+								}
+							}
+						}
+
+						tempData.articlesAssigned = articlesAssignedString;
 				    	deptStaffRaw.push(tempData);
 				    });
 
@@ -142,11 +157,11 @@ module.exports = {
 		    snapshot.forEach(doc => {
 		    	let tempData = doc.data();
 				if (isActive(tempData.lastLogin)) {
-					tempData.active = "success"
-					tempData.activeIcon = "check"
+					tempData.active = "success";
+					tempData.activeIcon = "check";
 				} else {
-					tempData.active = "warning"
-					tempData.activeIcon = "exclamation"
+					tempData.active = "warning";
+					tempData.activeIcon = "exclamation";
 				}
 		    	allStaff.push(tempData);
 		    });

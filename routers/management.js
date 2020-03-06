@@ -14,7 +14,7 @@ function isAuthenticated(req) {
 
 // middleware that is specific to this router
 router.use(function timeLog (req, res, next) {
-  	console.log('Time: ', Date.now());
+  	console.log('Time: ', Date());
   	console.log('IP: ', req.headers['x-forwarded-for'] || req.connection.remoteAddress);
 	next();
 });

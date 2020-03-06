@@ -170,7 +170,7 @@
                                     <%for(let i = 0; i < staff.length; i++) {%>
                                     <tr>
                                         <td><img class="rounded-circle mr-2" width="30" height="30" src="assets/img/avatars/avatar1.jpeg"><%=staff[i].firstname%> <%=staff[i].lastname%></td>
-                                        <td>Some article</td>
+                                        <td><%=staff[i].articlesAssigned%></td>
                                         <td><%=staff[i].location%></td>
                                         <td><a class="btn btn-<%=staff[i].active%> btn-circle ml-1" role="button"><i class="fas fa-<%=staff[i].activeIcon%> text-white"></i></a></td>
                                         <td><%=staff[i].lastLogin%></td>
