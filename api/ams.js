@@ -46,6 +46,25 @@ module.exports = {
 
 	departments: function() {
 		return [
+			"Production",
+			"PR and Marketing",
+			"Outreach",
+			"Senior Management",
+			"Editorial"
+		];
+	},
+
+	subteams: function() {
+		return [
+			"Board"
+			"Chief Editors"
+			"Software Engineers",
+			"Social Media",
+			"Print Designers",
+			"Artists",
+			"Communications",
+			"Subject Amabassadors",
+			"Regional Ambassadors",
 			"Astrophysics",
 			"Biochemistry",
 			"Biology",
@@ -56,10 +75,10 @@ module.exports = {
 			"Mathematics",
 			"Medicine",
 			"Physics",
-			"Policy & Ethics",
-			"Production"
-		];
-	},
+			"Policy and Ethics"		
+		]
+
+	}
 
 	articleTypes: function() {
 		return ["Original Research",
