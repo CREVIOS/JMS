@@ -181,6 +181,10 @@ module.exports = {
 					tempData.active = "warning";
 					tempData.activeIcon = "exclamation";
 				}
+
+
+				tempData.department = tempData.departments.join(", ");
+
 		    	allStaff.push(tempData);
 		    });
 
