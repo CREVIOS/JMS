@@ -4,7 +4,7 @@ const path = require('path');
 const fs = require('fs');
 const ams = require("./ams.js")
 const analytics = require("./analytics.js")
-
+const mailer = require("./mailer.js")
 const oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
 
 // Add the Firebase products that you want to use
@@ -267,8 +267,26 @@ module.exports = {
 	},
 
 	saveArticle: function(toUpdate, id, dept, req, res) {
-		let articles = db.collection("articles").doc(id);
-		let updateSingle = articles.update(toUpdate);
+        db.collection("articles").doc(id).get()
+        .then(doc => {
+            if (!doc.exists) {
+                console.log("Mailer can't find doc " + id);
+            } else {
+                let art = doc.data();
+                let editorsStr = art.editors.map(function(elem){
+   					return elem.email;
+				}).join(",");	
+                let mailOpt = mailer.articleUpdated(art.author, editorsStr, art.title, art.status);
+                mailer.sendEmail(mailOpt);
+            }
+        })
+        .catch(err => {
+            console.log('Error getting document', err);
+            res.render(path.join(__dirname+'/../views/error.ejs'));
+        });
+
+        let article =db.collection("articles").doc(id);
+		let updateSingle = article.update(toUpdate);
 		module.exports.articleOverview(req, res);
 	},
 
@@ -287,7 +305,7 @@ module.exports = {
 	    		let tempData = doc.data();
 	    		let currentEditors = tempData.editors;
 	    		currentEditors.push(newEditor);
-				let articles = db.collection(collection).doc(id);
+				let articles = db.collection("articles").doc(id);
 				let updateSingle = articles.update({editors: currentEditors});
 				module.exports.articleOverview(req, res);
 	    	}
