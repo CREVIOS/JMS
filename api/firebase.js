@@ -344,3 +344,28 @@ function isActive(lastLogin) {
 		}
 	}
 }
+
+
+// function signupStaff() {
+// 	// Add code to get all users
+// 	let staffRef = db.collection('staff').get()
+// 	.then(snapshot => {
+// 		let count = 0;
+// 	    snapshot.forEach(doc => {
+// 	    	count += 1;
+// 	    	let tempData = doc.data();
+// 	    		    	console.log(tempData.firstname, tempData.email);
+// 	    	firebase.auth().createUserWithEmailAndPassword(tempData.email.trim(), "RANDOMysjNewAMSv4PASS%").catch(function(error) {
+// 			  var errorCode = error.code;
+// 			  var errorMessage = error.message;
+// 			  console.log(errorCode, errorMessage, tempData.email);
+// 			});
+// 	    });
+// 	    console.log(count);
+// 	})
+// 	.catch(err => {
+// 		console.log('Error getting documents', err);
+// 	});
+// }
+
+// signupStaff();
