@@ -41,7 +41,8 @@ module.exports = {
 			'Ready to Publish',
 			'Published',
 			'Rejected',
-			'Failed Data Check'];
+			'Failed Data Check',
+			'DUPLICATE'];
 	},
 
 	departments: function() {
