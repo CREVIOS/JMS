@@ -68,6 +68,10 @@ module.exports = {
 	    } else {
 	    	let tempUserData = doc.data();
 	    	let dept = tempUserData.departments[0];
+	    	if (tempUserData.departments[0] == "*") {
+	    		tempUserData.departments = ams.departments();
+	    		dept = tempUserData.departments[0];
+	    	}
 	    	if (req.query.department != "") {
 	    		for (var i = tempUserData.departments.length - 1; i >= 0; i--) {
 	    			if (tempUserData.departments[i] == req.query.department) {
