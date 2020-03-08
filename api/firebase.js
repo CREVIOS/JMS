@@ -107,7 +107,7 @@ module.exports = {
 					let senior = "";
 				    snapshot.forEach(doc => {
 				    	let tempData = doc.data();
-				    	if (tempData.authorizationLevel >= 3) {
+				    	if (tempData.authorizationLevel >= 2) {
 				    		senior += tempData.firstname + " " + tempData.lastname + " ";
 				    	}
 
