@@ -30,7 +30,6 @@ let db = firebase.firestore();
 
 module.exports = {
 	login: function(username, password, req, res) {
-		console.log(username, password);
 		firebase.auth().signInWithEmailAndPassword(username, password)
 		.catch(function(error) {
 		  	var errorCode = error.code;
@@ -74,9 +73,7 @@ module.exports = {
 	    	}
 	    	if (req.query.department != "") {
 	    		for (var i = tempUserData.departments.length - 1; i >= 0; i--) {
-	    			console.log(tempUserData.departments[i], req.query.department);
 	    			if (tempUserData.departments[i] == req.query.department) {
-	    				console.log("assigned");
 	    				dept = req.query.department;
 	    				break;
 	    			}
