@@ -74,7 +74,9 @@ module.exports = {
 	    	}
 	    	if (req.query.department != "") {
 	    		for (var i = tempUserData.departments.length - 1; i >= 0; i--) {
+	    			console.log(tempUserData.departments[i], req.query.department);
 	    			if (tempUserData.departments[i] == req.query.department) {
+	    				console.log("assigned");
 	    				dept = req.query.department;
 	    				break;
 	    			}

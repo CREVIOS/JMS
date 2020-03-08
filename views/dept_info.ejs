@@ -71,9 +71,9 @@
                 <select class="form-control form-control-sm custom-select custom-select-sm" style="width: 200px;margin: 0 0 20px 0 ;" id="deptChoice" onchange="location = this.value;">
                     <% for(let i = 0; i < departments.length; i++) { %>
                         <% if (department == departments[i]) {%>
-                            <option value="dept_info?department=<%=departments[i]%>" selected=""><%=departments[i]%></option>
+                            <option value="dept_info?department=<%=departments[i].replace('&', '%26')%>" selected=""><%=departments[i]%></option>
                         <%} else {%>
-                            <option value="dept_info?department=<%=departments[i]%>"><%=departments[i]%></option>
+                            <option value="dept_info?department=<%=departments[i].replace('&', '%26')%>"><%=departments[i]%></option>
                         <%}%>
                     <% } %>
                 </select>
