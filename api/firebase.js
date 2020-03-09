@@ -279,8 +279,7 @@ module.exports = {
                 let editorsStr = art.editors.map(function(elem){
    					return elem.email;
 				}).join(",");	
-                let mailOpt = mailer.articleUpdated(art.author, editorsStr, art.title, art.status);
-                mailer.sendEmail(mailOpt);
+                mailer.articleUpdated(art.author, editorsStr, art.title, art.status);
             }
         })
         .catch(err => {
@@ -310,6 +309,7 @@ module.exports = {
 	    		currentEditors.push(newEditor);
 				let articles = db.collection("articles").doc(id);
 				let updateSingle = articles.update({editors: currentEditors});
+			  	mailer.newEditor(newEditor.email, tempData.title);
 				module.exports.articleOverview(req, res);
 	    	}
 	  	})
@@ -317,6 +317,7 @@ module.exports = {
 	    	console.log('Error getting document', err);
 			res.render(path.join(__dirname+'/../views/error.ejs'));
 	  	});
+
 	}
 
 };

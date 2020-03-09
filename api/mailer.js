@@ -18,7 +18,7 @@ module.exports = {
         
             html: '<p><b>Hi,</b><br>You article ' + article + ' has been updated to ' + status + '</p>' // html body
         };
-        return mailOptions;
+        module.exports.sendEmail(mailOptions);
     },
 
     sendEmail: function(mailOptions) {
@@ -29,5 +29,17 @@ module.exports = {
             }
             console.log('Message sent: ' + info.response);
         });
+    },
+
+    newEditor: function(email, title) {
+        var mailOptions = {
+            from: '"YSJournal" <submissions@ysjournal.com', // sender address
+            to: email,
+            subject: 'New article assigned', // Subject line
+        
+            html: '<p><b>Hi,</b><br>You have been assigned the article: ' + title + '</p>' // html body
+        }
+
+        module.exports.sendEmail(mailOptions);
     }
 };
