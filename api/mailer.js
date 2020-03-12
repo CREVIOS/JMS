@@ -8,7 +8,7 @@ auth: {
 }
 });
 
-module.exports = 
+module.exports = {
     // setup e-mail data with unicode symbols
     articleUpdated: function(author, editor, article, status) {
         var mailOptions = {
