@@ -8,7 +8,7 @@ auth: {
 }
 });
 
-module.exports = {
+module.exports = 
     // setup e-mail data with unicode symbols
     articleUpdated: function(author, editor, article, status) {
         var mailOptions = {
@@ -19,6 +19,7 @@ module.exports = {
             html: '<p><b>Hi,</b><br>You article ' + article + ' has been updated to ' + status + '</p>' // html body
         };
         module.exports.sendEmail(mailOptions);
+        console.log("Email Sent to" + author + editor);
     },
 
     sendEmail: function(mailOptions) {
