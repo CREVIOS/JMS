@@ -20,7 +20,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieSession({
   name: 'session',
   keys: ['key1', 'key2'],
-  maxAge: 24 * 60 * 60 * 1000;
+  maxAge: 24 * 60 * 60 * 1000
 }))
 
 app.use('/', webplatform);
