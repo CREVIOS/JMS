@@ -26,7 +26,8 @@
     "express-mailer": "^0.3.1",
     "firebase": "^7.9.3",
     "firebase-admin": "^8.9.2",
-    "node-cron": "^2.0.3"
-    
+    "grpc": "^1.24.2",
+    "node-cron": "^2.0.3",
+    "node-pre-gyp": "^0.14.0"
   }
 }
