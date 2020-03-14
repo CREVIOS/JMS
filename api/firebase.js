@@ -7,20 +7,22 @@ const analytics = require("./analytics.js")
 const mailer = require("./mailer.js")
 const oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
 
+require('dotenv').config()
 // Add the Firebase products that you want to use
+
 require("firebase/auth");
 require("firebase/firestore");
 
 // Set config vars for Firebase
 var firebaseConfig = {
-	apiKey: "AIzaSyAx2gYvwN7jNp1UJKzd72TzWNfNhmPEZ4w",
-	authDomain: "ams-v4.firebaseapp.com",
-	databaseURL: "https://ams-v4.firebaseio.com",
+	apiKey: process.env.FIREBASE_API_KEY,
+	authDomain: process.env.FIREBASE_AUTH_DOMAIN,
+	databaseURL: process.env.FIREBASE_DB_DOMAIN,
 	projectId: "ams-v4",
-	storageBucket: "ams-v4.appspot.com",
-	messagingSenderId: "565534267801",
-	appId: "1:565534267801:web:2fadb6cf262d8703fcdb08",
-	measurementId: "G-DHLB8K7Z6R"
+	storageBucket: process.env.FIREBASE_,
+	messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
+	appId: process.env.FIREASE_APP_ID,
+	measurementId: process.env.MEASURE_ID
 };
 
 // Initialize Firebase
@@ -30,6 +32,7 @@ let db = firebase.firestore();
 
 module.exports = {
 	login: function(username, password, req, res) {
+		console.log(username, password);
 		firebase.auth().signInWithEmailAndPassword(username, password)
 		.catch(function(error) {
 		  	var errorCode = error.code;
@@ -73,7 +76,9 @@ module.exports = {
 	    	}
 	    	if (req.query.department != "") {
 	    		for (var i = tempUserData.departments.length - 1; i >= 0; i--) {
+	    			console.log(tempUserData.departments[i], req.query.department);
 	    			if (tempUserData.departments[i] == req.query.department) {
+	    				console.log("assigned");
 	    				dept = req.query.department;
 	    				break;
 	    			}
@@ -279,7 +284,8 @@ module.exports = {
                 let editorsStr = art.editors.map(function(elem){
    					return elem.email;
 				}).join(",");	
-                mailer.articleUpdated(art.author, editorsStr, art.title, art.status);
+                let mailOpt = mailer.articleUpdated(art.author, editorsStr, art.title, art.status);
+                mailer.sendEmail(mailOpt);
             }
         })
         .catch(err => {
@@ -309,7 +315,6 @@ module.exports = {
 	    		currentEditors.push(newEditor);
 				let articles = db.collection("articles").doc(id);
 				let updateSingle = articles.update({editors: currentEditors});
-			  	mailer.newEditor(newEditor.email, tempData.title);
 				module.exports.articleOverview(req, res);
 	    	}
 	  	})
@@ -317,7 +322,6 @@ module.exports = {
 	    	console.log('Error getting document', err);
 			res.render(path.join(__dirname+'/../views/error.ejs'));
 	  	});
-
 	}
 
 };
