@@ -58,7 +58,14 @@ router.get('/members', function (req, res) {
 	} else {
     	res.render(path.join(__dirname+'/../views/login.ejs'));
 	}
+});
 
+router.get('/final_reviews', function (req, res) {
+  	if (isAuthenticated(req)) {
+		firebase.getFinalReviews(req, res);
+	} else {
+    	res.render(path.join(__dirname+'/../views/login.ejs'));
+	}
 });
 
 router.get('/login', function (req, res) {

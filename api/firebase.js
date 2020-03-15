@@ -206,6 +206,59 @@ module.exports = {
 		});
 	},
 
+	getFinalReviews: function(req, res) {
+		// Get all articles in the collection.
+		let articlesRef = db.collection('articles').where("status", "==", "Final Review").get()
+		.then(snapshot => {
+			let articlesRaw = [];
+		    snapshot.forEach(doc => {
+		    	let tempData = doc.data();
+				if ((typeof tempData.timestamp !== "object" && tempData.timestamp != "") &&
+					tempData.status != "Published" &&
+					tempData.status != "Failed Data Check" &&
+					tempData.status != "Rejected" &&
+					tempData.status != "DUPLICATE") {
+					tempData.id = doc.id;
+					tempData.editors
+					for (var i = tempData.editors.length - 1; i >= 0; i--) {
+						if (tempData.editors[i].type == "final") {
+							tempData.finalEditor = {email: tempData.editors[i].email, timestamp: tempData.editors[i].timestamp};
+							if (withinDeadline(tempData.finalEditor.timestamp)) {
+								tempData.color = "success";
+							} else {
+								tempData.color = "danger";
+							}
+							break;
+						}
+						tempData.finalEditor = {email: "", timestamp: ""};
+					}
+					if (tempData.finalEditor.email == "") {
+						tempData.color = "warning";
+					}
+			    	articlesRaw.push(tempData);
+		    	}
+		    });
+
+			articlesRaw.sort(function(a,b){
+				let bDates = b.timestamp.split("-");
+				let aDates = a.timestamp.split("-");
+				let bDate = new Date(bDates[2], bDates[1]-1, bDates[0]);
+				let aDate = new Date(aDates[2], aDates[1]-1, aDates[0]);
+			  	return bDate - aDate;
+			});
+
+    		res.render(path.join(__dirname+'/../views/final_reviews.ejs'), {articles : articlesRaw,
+	    																	displayName: req.session.authenticatedUser,
+	    																	statuses: ams.articleStatuses(),
+	    																	types: ams.articleTypes(),
+	    																	subjects: ams.subjects()});
+		})
+		.catch(err => {
+			console.log('Error getting documents', err);
+    		res.render(path.join(__dirname+'/../views/error.ejs'));
+		});
+	},
+
 	createArticle: function(object) {
 		// Add a new document with a generated id.
 		let addDoc = db.collection('articles').add(object).then(ref => {
@@ -346,6 +399,21 @@ function isActive(lastLogin) {
 
 		const diffDays = Math.round(Math.abs((firstDate - secondDate) / oneDay));
 		if (diffDays < 28) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+}
+
+function withinDeadline(date) {
+	if (typeof date !== "undefined") {
+		let firstDate = new Date();
+		let aDates = date.split("-");
+		let secondDate = new Date(aDates[2], aDates[1]-1, aDates[0]);
+
+		const diffDays = Math.round(Math.abs((firstDate - secondDate) / oneDay));
+		if (diffDays < 10) {
 			return true;
 		} else {
 			return false;

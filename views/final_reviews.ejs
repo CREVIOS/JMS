@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Final Reviews - YSJ</title>
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
+    <link rel="stylesheet" href="assets/fonts/fontawesome-all.min.css">
+    <link rel="stylesheet" href="assets/fonts/font-awesome.min.css">
+    <link rel="stylesheet" href="assets/fonts/fontawesome5-overrides.min.css">
+</head>
+
+<body id="page-top">
+    <div id="wrapper">
+        <nav class="navbar navbar-dark align-items-start sidebar sidebar-dark accordion" style="background-color: rgb(214,70,74);">
+            <div class="container-fluid d-flex flex-column p-0">
+                <a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="#">
+                    <div class="sidebar-brand-icon rotate-n-15"></div>
+                    <div class="sidebar-brand-text mx-3"><span>YSJournal</span></div>
+                </a>
+                <hr class="sidebar-divider my-0">
+                <ul class="nav navbar-nav text-light" id="accordionSidebar">
+                    <li class="nav-item" role="presentation"><a class="nav-link" href="index"><i class="fas fa-tachometer-alt"></i><span>The Journal</span></a></li>
+                    <li class="nav-item" role="presentation"><a class="nav-link" href="members"><i class="fas fa-user"></i><span>Members</span></a></li>
+                    <li class="nav-item" role="presentation"><a class="nav-link active" href="articles"><i class="fas fa-table"></i><span>Articles</span></a><a class="nav-link" href="dept_info"><i class="fas fa-flag-checkered"></i><span>Department Overview</span></a></li>
+                </ul>
+                <div class="text-center d-none d-md-inline"><button class="btn rounded-circle border-0" id="sidebarToggle" type="button"></button></div>
+            </div>
+        </nav>
+        <div class="d-flex flex-column" id="content-wrapper">
+            <div id="content">
+                <nav class="navbar navbar-light navbar-expand bg-white shadow mb-4 topbar static-top">
+                    <div class="container-fluid"><button class="btn btn-link d-md-none rounded-circle mr-3" id="sidebarToggleTop" type="button"><i class="fas fa-bars"></i></button>
+                        <form class="form-inline d-none d-sm-inline-block mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+                            <div class="input-group"></div>
+                        </form>
+                        <ul class="nav navbar-nav flex-nowrap ml-auto">
+                            <li class="nav-item dropdown d-sm-none no-arrow"><a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="#"><i class="fas fa-search"></i></a>
+                                <div class="dropdown-menu dropdown-menu-right p-3 animated--grow-in" role="menu" aria-labelledby="searchDropdown">
+                                    <form class="form-inline mr-auto navbar-search w-100">
+                                        <div class="input-group"><input class="bg-light form-control border-0 small" type="text" placeholder="Search for ...">
+                                            <div class="input-group-append"><button class="btn btn-primary py-0" type="button"><i class="fas fa-search"></i></button></div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </li>
+                            <li class="nav-item dropdown no-arrow mx-1" role="presentation">
+                                <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="#"><span class="badge badge-danger badge-counter">3+</span><i class="fas fa-bell fa-fw"></i></a>
+                                    <div class="dropdown-menu dropdown-menu-right dropdown-list dropdown-menu-right animated--grow-in"
+                                        role="menu">
+                                        <h6 class="dropdown-header">alerts center</h6>
+                                        <a class="text-center dropdown-item small text-gray-500" href="#">Show All Alerts</a></div>
+                                </div>
+                            </li>
+                            <div class="d-none d-sm-block topbar-divider"></div>
+                            <li class="nav-item dropdown no-arrow" role="presentation">
+                                <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="#"><span class="d-none d-lg-inline mr-2 text-gray-600 small"><%=displayName%></span><img class="border rounded-circle img-profile" src="assets/img/avatars/avatar1.jpeg"></a>
+                                    <div
+                                        class="dropdown-menu shadow dropdown-menu-right animated--grow-in" role="menu"><a class="dropdown-item" role="presentation" href="#"><i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>&nbsp;Profile</a>
+                                        <div class="dropdown-divider"></div><a class="dropdown-item" role="presentation" href="logout"><i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>&nbsp;Logout</a></div>
+                    </div>
+                    </li>
+                    </ul>
+            </div>
+            </nav>
+            <div class="container-fluid">
+                <h3 class="text-dark mb-4">Articles</h3>
+                <div class="card shadow">
+                    <div class="card-header py-3">
+                        <p class="text-primary m-0 font-weight-bold">Ready for Final Review</p>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6 text-nowrap">
+                                <div id="dataTable_length" class="dataTables_length" aria-controls="dataTable">
+                                    <label>Filter:&nbsp;
+                                    <select class="form-control form-control-sm custom-select custom-select-sm" style="width: 120px;margin: 0 20px 0 10px ;" id="statusesFilterSelector" onChange="filterBy()">
+                                        <option value="" selected="">Any Status</option>
+                                        <% for(let i = 0; i < statuses.length; i++) { %>
+                                            <option value="<%=statuses[i]%>"><%=statuses[i]%></option>
+                                        <% } %>
+                                    </select>
+                                    <select class="form-control form-control-sm custom-select custom-select-sm" style="width: 114px;margin: 0 20px 0 10px;" id="subjectsFilterSelector" onChange="filterBy()">
+                                        <option value="" selected="">Any Subject</option>
+                                        <% for(let i = 0; i < subjects.length; i++) { %>
+                                            <option value="<%=subjects[i]%>"><%=subjects[i]%></option>
+                                        <% } %>
+                                    </select>
+                                    <select class="form-control form-control-sm custom-select custom-select-sm" style="width: 114px;margin: 0 20px 0 10px;" id="typesFilterSelector" onChange="filterBy()">
+                                        <option value="" selected="">Any Type</option>
+                                        <% for(let i = 0; i < types.length; i++) { %>
+                                            <option value="<%=types[i]%>"><%=types[i]%></option>
+                                        <% } %>
+                                    </select>&nbsp;</label><label></label></div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="text-md-right dataTables_filter" id="dataTable_filter">
+                                    <input id="filterSearch" type="search" class="form-control form-control-sm" aria-controls="dataTable" placeholder="Search" style="width: 100%;">
+                                    <label></label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="table-responsive table mt-2" id="dataTable" role="grid" aria-describedby="dataTable_info">
+                            <table class="table dataTable my-0" id="dataTable">
+                                <thead>
+                                    <tr>
+                                        <th>Title</th>
+                                        <th>Subject</th>
+                                        <th>Final Editor</th>
+                                        <th>Start Date</th>
+                                        <th>Status</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% for(let i = 0; i < articles.length; i++) { %>
+                                    <tr class="articleRows">
+                                        <td class="articleRowSearch"><%=articles[i].title%></td>
+                                        <td class="subjectsFilterCol"><%=articles[i].subject%></td>
+                                        <td class="articleRowSearch"><%=articles[i].finalEditor.email%></td>
+                                        <td class=""><%=articles[i].finalEditor.timestamp%></td>
+                                        <td class="bg-<%=articles[i].color%> text-white statusesFilterCol"><%=articles[i].status%></td>
+                                    </tr>
+                                    <% } %>
+                                    <tr></tr>
+                                </tbody>
+                                <tfoot>
+                                    <tr></tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <footer class="bg-white sticky-footer">
+            <div class="container my-auto">
+                <div class="text-center my-auto copyright"><span>Copyright © YSJ 2020</span></div>
+            </div>
+        </footer>
+    </div><a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a></div>
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="assets/js/chart.min.js"></script>
+    <script src="assets/js/bs-init.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.js"></script>
+    <script src="assets/js/theme.js"></script>
+    <script type="text/javascript">
+        // Filtering functions here
+        function filterBy() {
+            let searchFilter = document.getElementById("filterSearch").value;
+            if (currentFilter("statusesFilterSelector") == "" &&
+                currentFilter("subjectsFilterSelector") == "" &&
+                currentFilter("typesFilterSelector") == "" &&
+                searchFilter == "") {
+                    resetFilterRows();
+            } else {
+                let rows = document.getElementsByClassName("articleRows");
+                for (var i = rows.length - 1; i >= 0; i--) {
+                    rows[i].style.display = "none";
+                    if ( articleFiltered(rows[i], "subjectsFilterCol", currentFilter("subjectsFilterSelector")) &&
+                         articleFiltered(rows[i], "typesFilterCol", currentFilter("typesFilterSelector")) &&
+                         articleFilteredBySearch(rows[i])) {
+                        rows[i].style.display = "";
+                    }
+                }
+            }
+        };
+
+
+        function articleFilteredBySearch(row) {
+            let selectedFilter = document.getElementById("filterSearch").value;
+            if (selectedFilter == "") { return true; }
+            let rowInfo = row.getElementsByClassName("articleRowSearch");
+            let queryStr = "";
+            for (var j = rowInfo.length - 1; j >= 0; j--) {
+                queryStr += rowInfo[j].innerHTML + " ";
+            }
+            if (queryStr.toLowerCase().indexOf(selectedFilter.toLowerCase()) !== -1) {
+                return true;
+            } else {
+                return false;
+            }
+        };
+
+        function articleFiltered(row, column, filter) {
+            let col = row.getElementsByClassName(column)[0].innerHTML;
+            if (filter == "" || col == filter) {
+                return true;
+            } else {
+                return false;
+            }
+        };
+
+        function currentFilter(selectorName) {
+            let deptFilter = document.getElementById(selectorName);
+            let filter = deptFilter.options[deptFilter.selectedIndex].value;
+            return filter;
+        };
+
+        function resetFilterRows() {
+            let rows = document.getElementsByClassName("articleRows");
+            for (var i = rows.length - 1; i >= 0; i--) {
+                rows[i].style.display = "";
+            }
+        };
+
+        document.getElementById("filterSearch").addEventListener('input', function() {
+            filterBy();
+        });
+    </script>
+</body>
+
+</html>
