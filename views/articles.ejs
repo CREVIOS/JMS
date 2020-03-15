@@ -121,7 +121,7 @@
                                         <td class="articleRowSearch"><%=articles[i].title%></td>
                                         <td class="subjectsFilterCol"><%=articles[i].subject%></td>
                                         <td class="typesFilterCol"><%=articles[i].type%></td>
-                                        <td> <%=articles[i].mainEditor%> </td>
+                                        <td> <%=articles[i].editors.map(function(elem){ return elem.email; }).join(", ")%> </td>
                                         <td class="articleRowSearch"><%=articles[i].timestamp%></td>
                                         <td class="bg-<%=articles[i].color%> text-white statusesFilterCol"><%=articles[i].status%></td>
                                         <td> <a class="btn btn-info btn-circle ml-1" role="button" href="article_overview?id=<%=articles[i].id%>&dept=<%=articles[i].subject%>"><i class="fas fa-info-circle text-white"></i></a></td>
