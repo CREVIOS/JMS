@@ -1,4 +1,25 @@
 module.exports = {
+	minimumAccess: function(page) {
+		let levels = {
+			'': 0,
+			'/': 0,
+			'/index': 0,
+			'/articles': 1,
+			'/members': 1,
+			'/dept_info': 2,
+			'/login': 0,
+			'/article_overview': 1,
+			'/logout': 0,
+			'/final_reviews' : 2,
+			'/saveArticle': 1,
+			'/assignEditor': 2,
+			'/assognFinalEditor' : 3,
+			'/resetPassword': 0,
+			'/admin': 4
+		};
+		return levels[page];
+	},
+
 	timelineFor: function(status, timestamp, department) {
 		let percentages = {
 			'Submitted': '0',
@@ -87,5 +108,4 @@ module.exports = {
 		];
 
 	}
-
 };

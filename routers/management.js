@@ -1,22 +1,42 @@
 const path = require('path');
+const createError = require('http-errors');
 const fs = require('fs');
 const express = require('express')
 const router = express.Router()
 const firebase = require('./../api/firebase.js');
+const ams = require('./../api/ams.js');
+const em = require('./../api/errorMessages.js');
 
 function isAuthenticated(req) {
-	if (req.session.authenticatedUser) {
+	if (req.session.authenticatedUser && req.session.authenticatedUserLevel) {
 		return true;
 	} else {
+		req.session.authenticatedUser = undefined;
+		req.session.authenticatedUserLevel = undefined;
 		return false;
 	}
+};
+
+function authorizedAccess(url, userLevel) {
+	let minAccess = parseInt(ams.minimumAccess(url));
+	if (userLevel >= minAccess) {
+		return true;
+	} else if (minAccess == 0) {
+		return true;
+	}
+	return false;
 };
 
 // middleware that is specific to this router
 router.use(function timeLog (req, res, next) {
   	console.log('Time: ', Date());
   	console.log('IP: ', req.headers['x-forwarded-for'] || req.connection.remoteAddress);
-	next();
+  	let reqPath = (req.baseUrl + req.path).replace(/\/$/, "");
+	if (authorizedAccess(reqPath, req.session.authenticatedUserLevel)) {
+		next();
+	} else {
+    	res.render(path.join(__dirname+'/../views/error.ejs'), {error: createError(401, em.errorMessage(401))});
+	}
 });
 
 router.get('/articles', function (req, res) {
@@ -79,6 +99,7 @@ router.post('/login', (req, res) => {
 
 router.get('/logout', (req, res) => {
 	req.session.authenticatedUser = undefined;
+	req.session.authenticatedUserLevel = undefined;
 	res.render(path.join(__dirname+'/../views/login.ejs'));
 });
 

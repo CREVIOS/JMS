@@ -1,4 +1,6 @@
 // Google Firebase
+require('dotenv').config();
+
 var firebase = require("firebase/app");
 const path = require('path');
 const fs = require('fs');
@@ -7,7 +9,6 @@ const analytics = require("./analytics.js")
 const mailer = require("./mailer.js")
 const oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
 
-require('dotenv').config()
 // Add the Firebase products that you want to use
 
 require("firebase/auth");
@@ -32,7 +33,6 @@ let db = firebase.firestore();
 
 module.exports = {
 	login: function(username, password, req, res) {
-		console.log(username, password);
 		firebase.auth().signInWithEmailAndPassword(username, password)
 		.catch(function(error) {
 		  	var errorCode = error.code;
@@ -43,9 +43,23 @@ module.exports = {
 		})
 		.then(function(user) {
 			if (user) {
-			    req.session.authenticatedUser = user.user.email;
-			    updateUserLastLogin(user.user.email);
-			    module.exports.getOverview(req, res);
+				let userRef = db.collection("staff").doc(user.user.email);
+				let getDoc = userRef.get()
+			  	.then(doc => {
+			    	if (!doc.exists) {
+		  				res.render(path.join(__dirname+'/../views/error.ejs'));
+			    	} else {
+			    		let tempData = doc.data();
+					    req.session.authenticatedUser = tempData.email;
+			    		req.session.authenticatedUserLevel = tempData.authorizationLevel;
+					    updateUserLastLogin(tempData.email);
+			    		module.exports.getOverview(req, res);
+			    	}
+			  	})
+			  	.catch(err => {
+			    	console.log('Error getting document', err);
+					res.render(path.join(__dirname+'/../views/error.ejs'));
+			  	});
 			}
 		});
 	},
@@ -76,9 +90,7 @@ module.exports = {
 	    	}
 	    	if (req.query.department != "") {
 	    		for (var i = tempUserData.departments.length - 1; i >= 0; i--) {
-	    			console.log(tempUserData.departments[i], req.query.department);
 	    			if (tempUserData.departments[i] == req.query.department) {
-	    				console.log("assigned");
 	    				dept = req.query.department;
 	    				break;
 	    			}
@@ -145,6 +157,7 @@ module.exports = {
 				    });
 
 	    	    	res.render(path.join(__dirname+'/../views/dept_info.ejs'), {displayName: req.session.authenticatedUser,
+																				authLevel: req.session.authenticatedUserLevel,
 																				department: dept,
 																				articles: articlesRaw,
 																				staff: deptStaffRaw,
@@ -172,7 +185,7 @@ module.exports = {
 
 	getOverview: function(req, res) {
 		let stats = analytics.summary();
-    	res.render(path.join(__dirname+'/../views/index.ejs'), { displayName: req.session.authenticatedUser, stats: stats});
+    	res.render(path.join(__dirname+'/../views/index.ejs'), { displayName: req.session.authenticatedUser, authLevel: req.session.authenticatedUserLevel, stats: stats});
 	},
 
 	getAllUsers: function(req, res) {
@@ -197,6 +210,7 @@ module.exports = {
 		    });
 
 	    	res.render(path.join(__dirname+'/../views/members.ejs'), {	displayName: req.session.authenticatedUser,
+	    																authLevel: req.session.authenticatedUserLevel,
 																		staff: allStaff,
 																		departments: ams.departments() });
 		})
@@ -249,6 +263,7 @@ module.exports = {
 
     		res.render(path.join(__dirname+'/../views/final_reviews.ejs'), {articles : articlesRaw,
 	    																	displayName: req.session.authenticatedUser,
+	    																	authLevel: req.session.authenticatedUserLevel,
 	    																	statuses: ams.articleStatuses(),
 	    																	types: ams.articleTypes(),
 	    																	subjects: ams.subjects()});
@@ -294,6 +309,7 @@ module.exports = {
 			});
     		res.render(path.join(__dirname+'/../views/articles.ejs'), { articles : articlesRaw,
     																	displayName: req.session.authenticatedUser,
+    																	authLevel: req.session.authenticatedUserLevel,
     																	statuses: ams.articleStatuses(),
     																	types: ams.articleTypes(),
     																	subjects: ams.subjects()});
@@ -317,6 +333,7 @@ module.exports = {
 				tempData.id = doc.id;
 				var statuses = ams.articleStatuses();
 	    		res.render(path.join(__dirname+'/../views/article_overview.ejs'), { displayName: req.session.authenticatedUser,
+	    																			authLevel: req.session.authenticatedUserLevel,
 	    																			article: tempData,
 	    																			statuses: statuses });
 	    	}

@@ -13,5 +13,10 @@
 </head>
 <body>
   <h1>Err, there has been a error, please contact the production team. </h1>
+  <p>
+    <% if (error) { %>
+      <%= error %>
+    <% } %>
+  </p>
 </body>
 </html>
