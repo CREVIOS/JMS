@@ -43,5 +43,9 @@ module.exports = {
         }
 
         module.exports.sendEmail(mailOptions);
+    },
+
+    trackerAlert: function() {
+
     }
 };
