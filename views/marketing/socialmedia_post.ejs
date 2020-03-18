@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Home - YSJournal</title>
+    <link rel="stylesheet" href="assets_2/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,400i,700,700i">
+</head>
+
+<body style="background:linear-gradient(rgba(47, 23, 15, 0.65), rgba(47, 23, 15, 0.65)), url('assets_2/img/bg.jpg');">
+    <h1 class="text-center text-white d-none d-lg-block site-heading"><span class="text-primary site-heading-upper mb-3">PR&ampMARKETING @ YSJ</span><span class="site-heading-lower">SOCIAL MEDIA</span></h1>
+    <nav class="navbar navbar-light navbar-expand-lg bg-dark py-lg-4" id="mainNav">
+        <div class="container"><a class="navbar-brand text-uppercase d-lg-none text-expanded" href="#">YSJournal</a><button data-toggle="collapse" data-target="#navbarResponsive" class="navbar-toggler" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+            <div
+                class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="nav navbar-nav mx-auto">
+                    <li class="nav-item" role="presentation"><a class="nav-link" href="/index">Back to the AMS</a></li>
+                    <li class="nav-item" role="presentation"><a class="nav-link" href="socialmedia_post">New</a></li>
+                    <li class="nav-item" role="presentation"><a class="nav-link" href="socialmedia_all_posts"><strong>ALL POSTS</strong></a></li>
+                </ul>
+        </div>
+        </div>
+    </nav>
+    <form action="/socialmedia_post" method='POST'>
+        <section class="page-section clearfix">
+            <div class="container">
+                <div class="intro">
+                    <input type="hidden" name=""><img class="img-fluid intro-img mb-3 mb-lg-0 rounded" src="assets_2/img/intro.jpg"></input>
+                    <div class="intro-text left-0 text-centerfaded p-5 rounded bg-faded text-center">
+                            <input type="hidden" name="id" value="<%=post.id%>">
+                            <h2 class="section-heading mb-4" style="align-content: center;">
+                                <input placeholder="Twitter? Instagram?" class="section-heading-upper text-center" type="text" name="type" value="<%= post.type %>" style="width:100%; background-color: transparent; border-color: transparent;">
+                                <input placeholder="Title Here" class="section-heading-lower text-center" type="text" name="title" value="<%= post.title %>" style="width:100%; background-color: transparent; border-color: transparent; text-transform: uppercase;">
+                            </h2>
+                            <textarea placeholder="Write the content of the post here" name="content" class="mb-3" style="width:100%; height: 100%; padding: 0 0 0 0; background-color: transparent; border-color: transparent;"><%= post.content %></textarea>
+                            <div class="mx-auto intro-button">
+                                <button class="btn btn-primary d-inline-block mx-auto btn-xl">Save</button>
+                            </div>                        
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="page-section cta">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-9 mx-auto">
+                        <div class="cta-inner text-center rounded">
+                            <h2 class="section-heading mb-4"><span class="section-heading-upper">More info</span></h2>
+                            <div class="text-md-left">
+                                <div class="form-row">
+                                    <div class="col">
+                                        <div class="form-group"><label for="author"><strong>Author</strong></label><input class="form-control" type="text" value="<%= post.author %>" name="author" style="height: 30px;" readonly></div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="form-group">
+                                            <label for="schedule"><strong>Scheduled for</strong></label>
+                                            <input class="form-control date" type="text" value="<%= post.schedule %>" name="schedule" style="height: 30px;" placeholder="Format dd-mm-yyyy (01-01-2020)">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="col">
+                                        <div class="form-group"><label for="timestamp"><strong>Created on</strong><br></label><input class="form-control" type="text" value="<%= post.timestamp %>" name="timestamp" style="height: 30px;" readonly></div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="form-group"><label for="tags"><strong>Tags</strong></label><input class="form-control" type="text" value="<%= post.tags %>" name="tags" style="height: 30px;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </form>
+    <footer class="footer text-faded text-center py-5">
+        <div class="container">
+            <p class="m-0 small">Copyright&nbsp;©&nbsp;YSJournal 2020</p>
+        </div>
+    </footer>
+    <script src="assets_2/js/jquery.min.js"></script>
+    <script src="assets_2/bootstrap/js/bootstrap.min.js"></script>
+    <script src="assets_2/js/current-day.js"></script>
+    <script type="text/javascript">
+        $("textarea").height( $("textarea")[0].scrollHeight );
+    </script>
+</body>
+
+</html>

@@ -15,7 +15,9 @@ module.exports = {
 			'/assignEditor': 2,
 			'/assognFinalEditor' : 3,
 			'/resetPassword': 0,
-			'/admin': 4
+			'/admin': 4,
+			'/socialmedia_all_posts': 3,
+			'/socialmedia_post': 3
 		};
 		return levels[page];
 	},

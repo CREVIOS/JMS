@@ -128,4 +128,28 @@ router.get('/resetPassword', (req, res) => {
 	res.render(path.join(__dirname+'/../views/resetPassword.ejs'));
 });
 
+router.get('/socialmedia_all_posts', (req, res) => {
+  	if (isAuthenticated(req)) {
+		firebase.socialmediaAllPosts(req, res);
+	} else {
+    	res.render(path.join(__dirname+'/../views/login.ejs'));
+	}
+});
+
+router.get('/socialmedia_post', (req, res) => {
+  	if (isAuthenticated(req)) {
+		firebase.socialmediaPost(req, res);
+	} else {
+    	res.render(path.join(__dirname+'/../views/login.ejs'));
+	}
+});
+
+router.post('/socialmedia_post', (req, res) => {
+  	if (isAuthenticated(req)) {
+		firebase.saveSocialmediaPost(req, res);
+	} else {
+    	res.render(path.join(__dirname+'/../views/login.ejs'));
+	}
+});
+
 module.exports = router

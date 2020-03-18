@@ -392,20 +392,88 @@ module.exports = {
 	    	console.log('Error getting document', err);
 			res.render(path.join(__dirname+'/../views/error.ejs'));
 	  	});
-	}
+	},
 
+	socialmediaAllPosts: function (req, res) {
+		// Get all articles in the collection.
+		let articlesRef = db.collection('socialmedia_posts');
+		let allArticles = articlesRef.get()
+		.then(snapshot => {
+			let collection = [];
+		    snapshot.forEach(doc => {
+		    	let tempData = doc.data();
+				if ((typeof tempData.timestamp !== "object" && tempData.timestamp != "")) {
+					tempData.id = doc.id;
+					if (postOnTime(tempData.timestamp)) { tempData.color = "success"; } else { tempData.color = "warning"; }
+			    	collection.push(tempData);
+		    	}
+		    });
+
+			collection.sort(function(a,b){
+				let bDates = b.timestamp.split("-");
+				let aDates = a.timestamp.split("-");
+				let bDate = new Date(bDates[2], bDates[1]-1, bDates[0]);
+				let aDate = new Date(aDates[2], aDates[1]-1, aDates[0]);
+			  	return bDate - aDate;
+			});
+
+			res.render(path.join(__dirname+'/../views/marketing/socialmedia_posts.ejs'), {posts: collection});
+		})
+		.catch(err => {
+			console.log('Error getting documents', err);
+    		res.render(path.join(__dirname+'/../views/error.ejs'));
+		});
+	},
+
+	socialmediaPost: function(req, res) {
+		let id = req.query.id;
+		if (typeof id === "undefined") {
+			res.render(path.join(__dirname+'/../views/marketing/socialmedia_post.ejs'), {post: {author: req.session.authenticatedUser, timestamp: currentDate()}});
+		} else {
+			let userRef = db.collection('socialmedia_posts').doc(id).get()
+		  	.then(doc => {
+		    	if (!doc.exists) {
+	  				res.render(path.join(__dirname+'/../views/error.ejs'));
+		    	} else {
+		    		let post = doc.data();
+		    		post.id = doc.id;
+					res.render(path.join(__dirname+'/../views/marketing/socialmedia_post.ejs'), {post: post});
+		    	}
+		  	})
+		  	.catch(err => {
+		    	console.log('Error getting document', err);
+				res.render(path.join(__dirname+'/../views/error.ejs'));
+		  	});
+		}
+	},
+
+	saveSocialmediaPost: function(req, res) {
+		if (req.body.id != "") {
+	        let article = db.collection("socialmedia_posts").doc(req.body.id);
+			let updateSingle = article.update(req.body);
+		} else {
+			let toAdd = req.body;
+			let addDoc = db.collection('socialmedia_posts').add(req.body).then(ref => {});
+		}
+		module.exports.socialmediaAllPosts(req, res);
+	}
 };
 
 function updateUserLastLogin(username) {
+	let currentTime = currentDate();
+	let articles = db.collection("staff").doc(username);
+	let updateSingle = articles.update({lastLogin: currentTime});
+};
+
+function currentDate() {
 	let currentDate = new Date();
 	let dd = currentDate.getDate();
 	let mm = currentDate.getMonth() + 1;
 	let yyyy = currentDate.getFullYear();
 
 	let currentTime = dd + "-" + mm + "-" + yyyy;
-	let articles = db.collection("staff").doc(username);
-	let updateSingle = articles.update({lastLogin: currentTime});
-};
+	return currentTime;
+}
 
 
 function isActive(lastLogin) {
@@ -438,6 +506,18 @@ function withinDeadline(date) {
 	}
 }
 
+function postOnTime(date) {
+	if (typeof date !== "undefined") {
+		let firstDate = new Date();
+		let aDates = date.split("-");
+		let secondDate = new Date(aDates[2], aDates[1]-1, aDates[0]);
+		if (secondDate <= firstDate) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+}
 
 // function signupStaff() {
 // 	// Add code to get all users
