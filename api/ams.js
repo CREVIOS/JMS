@@ -1,4 +1,8 @@
 module.exports = {
+	defaultSocialMediaImage: function() {
+		return "1IWQL6j1_qnURl82bpAFGKaic_9Asq3je";
+	},
+
 	minimumAccess: function(page) {
 		let levels = {
 			'': 0,

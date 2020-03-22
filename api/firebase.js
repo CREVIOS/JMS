@@ -7,6 +7,7 @@ const fs = require('fs');
 const ams = require("./ams.js")
 const analytics = require("./analytics.js")
 const mailer = require("./mailer.js")
+
 const oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
 
 // Add the Firebase products that you want to use
@@ -428,7 +429,9 @@ module.exports = {
 	socialmediaPost: function(req, res) {
 		let id = req.query.id;
 		if (typeof id === "undefined") {
-			res.render(path.join(__dirname+'/../views/marketing/socialmedia_post.ejs'), {post: {author: req.session.authenticatedUser, timestamp: currentDate()}});
+			res.render(path.join(__dirname+'/../views/marketing/socialmedia_post.ejs'), {post: {imageId: ams.defaultSocialMediaImage(),
+																								author: req.session.authenticatedUser,
+																								timestamp: currentDate()}});
 		} else {
 			let userRef = db.collection('socialmedia_posts').doc(id).get()
 		  	.then(doc => {
@@ -437,6 +440,9 @@ module.exports = {
 		    	} else {
 		    		let post = doc.data();
 		    		post.id = doc.id;
+		    		if (typeof post.imageId === "undefined") {
+		    			post.imageId = ams.defaultSocialMediaImage();
+		    		}
 					res.render(path.join(__dirname+'/../views/marketing/socialmedia_post.ejs'), {post: post});
 		    	}
 		  	})
@@ -448,7 +454,7 @@ module.exports = {
 	},
 
 	saveSocialmediaPost: function(req, res) {
-		if (req.body.id != "") {
+		if (req.body.id != "" && typeof req.body.id !== "undefined") {
 	        let article = db.collection("socialmedia_posts").doc(req.body.id);
 			let updateSingle = article.update(req.body);
 		} else {

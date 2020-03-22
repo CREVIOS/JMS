@@ -24,20 +24,21 @@
         </div>
         </div>
     </nav>
-    <form action="/socialmedia_post" method='POST'>
+    <form action="/socialmedia_post" method='POST' enctype="multipart/form-data">
         <section class="page-section clearfix">
             <div class="container">
                 <div class="intro">
-                    <input type="hidden" name=""><img class="img-fluid intro-img mb-3 mb-lg-0 rounded" src="assets_2/img/intro.jpg"></input>
+                    <input type="hidden" name=""><img class="img-fluid intro-img mb-3 mb-lg-0 rounded" src="https://drive.google.com/uc?export=view&id=<%=post.imageId%>"></input>
                     <div class="intro-text left-0 text-centerfaded p-5 rounded bg-faded text-center">
                             <input type="hidden" name="id" value="<%=post.id%>">
                             <h2 class="section-heading mb-4" style="align-content: center;">
                                 <input placeholder="Twitter? Instagram?" class="section-heading-upper text-center" type="text" name="type" value="<%= post.type %>" style="width:100%; background-color: transparent; border-color: transparent;">
-                                <input placeholder="Title Here" class="section-heading-lower text-center" type="text" name="title" value="<%= post.title %>" style="width:100%; background-color: transparent; border-color: transparent; text-transform: uppercase;">
+                                <textarea rows="1" placeholder="Title Here" class="section-heading-lower text-center" type="text" name="title" style="width:100%; background-color: transparent; border-color: transparent; text-transform: uppercase;"><%= post.title %></textarea>
                             </h2>
                             <textarea placeholder="Write the content of the post here" name="content" class="mb-3" style="width:100%; height: 100%; padding: 0 0 0 0; background-color: transparent; border-color: transparent;"><%= post.content %></textarea>
                             <div class="mx-auto intro-button">
                                 <button class="btn btn-primary d-inline-block mx-auto btn-xl">Save</button>
+                                <input class="btn btn-primary d-inline-block mx-auto btn-xl" type="file" name="imageId" accept="image/x-png,image/gif,image/jpeg">
                             </div>                        
                     </div>
                 </div>

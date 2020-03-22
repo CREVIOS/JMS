@@ -6,6 +6,7 @@ const router = express.Router()
 const firebase = require('./../api/firebase.js');
 const ams = require('./../api/ams.js');
 const em = require('./../api/errorMessages.js');
+const drive = require('./../api/googledrive.js');
 
 function isAuthenticated(req) {
 	if (req.session.authenticatedUser && req.session.authenticatedUserLevel) {
@@ -146,7 +147,12 @@ router.get('/socialmedia_post', (req, res) => {
 
 router.post('/socialmedia_post', (req, res) => {
   	if (isAuthenticated(req)) {
-		firebase.saveSocialmediaPost(req, res);
+  		console.log("Request in router", req.files);
+  		if (req.files.imageId.name != "") {
+			drive.uploadFile(req.body.title, req.files.imageId.mimetype, req.files.imageId.tempFilePath, req, res);
+  		} else {
+			firebase.saveSocialmediaPost(req, res);
+  		}
 	} else {
     	res.render(path.join(__dirname+'/../views/login.ejs'));
 	}
