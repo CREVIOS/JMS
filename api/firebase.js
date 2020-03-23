@@ -363,9 +363,17 @@ module.exports = {
             console.log('Error getting document', err);
             res.render(path.join(__dirname+'/../views/error.ejs'));
         });
-
+        
         let article =db.collection("articles").doc(id);
 		let updateSingle = article.update(toUpdate);
+
+        if (toUpdate.status == "Published" &&
+        	toUpdate.type == "Original Research") {
+        	let post = ams.newSocialMediaPost(toUpdate);
+			let addDoc = db.collection('socialmedia_posts')
+						.add(post).then(ref => {});
+        }
+
 		module.exports.articleOverview(req, res);
 	},
 
@@ -386,6 +394,10 @@ module.exports = {
 	    		currentEditors.push(newEditor);
 				let articles = db.collection("articles").doc(id);
 				let updateSingle = articles.update({editors: currentEditors});
+
+                let mailOpt = mailer.newEditor(newEditor.email, tempData.title);
+                mailer.sendEmail(mailOpt);
+
 				module.exports.articleOverview(req, res);
 	    	}
 	  	})
@@ -431,7 +443,7 @@ module.exports = {
 		if (typeof id === "undefined") {
 			res.render(path.join(__dirname+'/../views/marketing/socialmedia_post.ejs'), {post: {imageId: ams.defaultSocialMediaImage(),
 																								author: req.session.authenticatedUser,
-																								timestamp: currentDate()}});
+																								timestamp: ams.currentDate()}});
 		} else {
 			let userRef = db.collection('socialmedia_posts').doc(id).get()
 		  	.then(doc => {
@@ -466,20 +478,10 @@ module.exports = {
 };
 
 function updateUserLastLogin(username) {
-	let currentTime = currentDate();
+	let currentTime = ams.currentDate();
 	let articles = db.collection("staff").doc(username);
 	let updateSingle = articles.update({lastLogin: currentTime});
 };
-
-function currentDate() {
-	let currentDate = new Date();
-	let dd = currentDate.getDate();
-	let mm = currentDate.getMonth() + 1;
-	let yyyy = currentDate.getFullYear();
-
-	let currentTime = dd + "-" + mm + "-" + yyyy;
-	return currentTime;
-}
 
 
 function isActive(lastLogin) {

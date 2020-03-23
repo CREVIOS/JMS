@@ -1,4 +1,30 @@
 module.exports = {
+
+	currentDate: function() {
+		let currentDate = new Date();
+		let dd = currentDate.getDate();
+		let mm = currentDate.getMonth() + 1;
+		let yyyy = currentDate.getFullYear();
+
+		let currentTime = dd + "-" + mm + "-" + yyyy;
+		return currentTime;
+	},
+
+	newSocialMediaPost: function(article) {
+		let post = {
+			author: 'JMS',
+			content: article.title + '\n',
+			imageId: module.exports.defaultSocialMediaImage(),
+			schedule: module.exports.currentDate(),
+			tags: 'Original Research',
+			timestamp: module.exports.currentDate(),
+			title: article.title,
+			type: 'Instagram, Twitter'
+		};
+
+		return post;
+	},
+
 	defaultSocialMediaImage: function() {
 		return "1IWQL6j1_qnURl82bpAFGKaic_9Asq3je";
 	},
