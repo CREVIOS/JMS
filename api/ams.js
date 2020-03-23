@@ -1,5 +1,13 @@
 module.exports = {
 
+	socialMediaStatuses: function() {
+		return ["Draft",
+				"Approved",
+				"Released",
+				"Cancelled"]
+
+	},
+
 	currentDate: function() {
 		let currentDate = new Date();
 		let dd = currentDate.getDate();

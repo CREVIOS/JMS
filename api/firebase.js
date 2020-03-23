@@ -443,7 +443,9 @@ module.exports = {
 		if (typeof id === "undefined") {
 			res.render(path.join(__dirname+'/../views/marketing/socialmedia_post.ejs'), {post: {imageId: ams.defaultSocialMediaImage(),
 																								author: req.session.authenticatedUser,
-																								timestamp: ams.currentDate()}});
+																								timestamp: ams.currentDate(),
+																								status: 'Draft'},
+																						statuses: ams.socialMediaStatuses()});
 		} else {
 			let userRef = db.collection('socialmedia_posts').doc(id).get()
 		  	.then(doc => {
@@ -455,7 +457,7 @@ module.exports = {
 		    		if (typeof post.imageId === "undefined") {
 		    			post.imageId = ams.defaultSocialMediaImage();
 		    		}
-					res.render(path.join(__dirname+'/../views/marketing/socialmedia_post.ejs'), {post: post});
+					res.render(path.join(__dirname+'/../views/marketing/socialmedia_post.ejs'), {post: post, statuses: ams.socialMediaStatuses()});
 		    	}
 		  	})
 		  	.catch(err => {
