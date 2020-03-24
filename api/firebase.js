@@ -228,13 +228,8 @@ module.exports = {
 			let articlesRaw = [];
 		    snapshot.forEach(doc => {
 		    	let tempData = doc.data();
-				if ((typeof tempData.timestamp !== "object" && tempData.timestamp != "") &&
-					tempData.status != "Published" &&
-					tempData.status != "Failed Data Check" &&
-					tempData.status != "Rejected" &&
-					tempData.status != "DUPLICATE") {
+				if ((typeof tempData.timestamp !== "object" && tempData.timestamp != "")) {
 					tempData.id = doc.id;
-					tempData.editors
 					for (var i = tempData.editors.length - 1; i >= 0; i--) {
 						if (tempData.editors[i].type == "final") {
 							tempData.finalEditor = {email: tempData.editors[i].email, timestamp: tempData.editors[i].timestamp};
@@ -245,8 +240,11 @@ module.exports = {
 							}
 							break;
 						}
+					}
+					if (typeof finalEditor == "undefined") {
 						tempData.finalEditor = {email: "", timestamp: ""};
 					}
+
 					if (tempData.finalEditor.email == "") {
 						tempData.color = "warning";
 					}
@@ -528,27 +526,3 @@ function postOnTime(date) {
 		}
 	}
 }
-
-// function signupStaff() {
-// 	// Add code to get all users
-// 	let staffRef = db.collection('staff').get()
-// 	.then(snapshot => {
-// 		let count = 0;
-// 	    snapshot.forEach(doc => {
-// 	    	count += 1;
-// 	    	let tempData = doc.data();
-// 	    		    	console.log(tempData.firstname, tempData.email);
-// 	    	firebase.auth().createUserWithEmailAndPassword(tempData.email.trim(), "RANDOMysjNewAMSv4PASS%").catch(function(error) {
-// 			  var errorCode = error.code;
-// 			  var errorMessage = error.message;
-// 			  console.log(errorCode, errorMessage, tempData.email);
-// 			});
-// 	    });
-// 	    console.log(count);
-// 	})
-// 	.catch(err => {
-// 		console.log('Error getting documents', err);
-// 	});
-// }
-
-// signupStaff();
