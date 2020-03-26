@@ -104,4 +104,7 @@ dist
 .tern-port
 
 # Firebase API Key
- token.json
+token.json
+
+# Private keys
+credentials.json
