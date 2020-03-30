@@ -23,10 +23,13 @@
     "dotenv": "^8.2.0",
     "ejs": "^3.0.1",
     "express": "^4.17.1",
+    "express-fileupload": "^1.1.6",
     "express-mailer": "^0.3.1",
     "firebase": "^7.9.3",
     "firebase-admin": "^8.9.2",
+    "googleapis": "^39.2.0",
     "grpc": "^1.24.2",
+    "http-errors": "^1.7.3",
     "node-cron": "^2.0.3",
     "node-pre-gyp": "^0.14.0"
   }

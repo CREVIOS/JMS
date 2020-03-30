@@ -1,4 +1,65 @@
 module.exports = {
+
+	socialMediaStatuses: function() {
+		return ["Draft",
+				"Approved",
+				"Released",
+				"Cancelled"]
+
+	},
+
+	currentDate: function() {
+		let currentDate = new Date();
+		let dd = currentDate.getDate();
+		let mm = currentDate.getMonth() + 1;
+		let yyyy = currentDate.getFullYear();
+
+		let currentTime = dd + "-" + mm + "-" + yyyy;
+		return currentTime;
+	},
+
+	newSocialMediaPost: function(article) {
+		let post = {
+			author: 'JMS',
+			content: article.title + '\n',
+			imageId: module.exports.defaultSocialMediaImage(),
+			schedule: module.exports.currentDate(),
+			tags: 'Original Research',
+			timestamp: module.exports.currentDate(),
+			title: article.title,
+			type: 'Instagram, Twitter'
+		};
+
+		return post;
+	},
+
+	defaultSocialMediaImage: function() {
+		return "1IWQL6j1_qnURl82bpAFGKaic_9Asq3je";
+	},
+
+	minimumAccess: function(page) {
+		let levels = {
+			'': 0,
+			'/': 0,
+			'/index': 0,
+			'/articles': 1,
+			'/members': 1,
+			'/dept_info': 2,
+			'/login': 0,
+			'/article_overview': 1,
+			'/logout': 0,
+			'/final_reviews' : 2,
+			'/saveArticle': 1,
+			'/assignEditor': 2,
+			'/assognFinalEditor' : 3,
+			'/resetPassword': 0,
+			'/admin': 4,
+			'/socialmedia_all_posts': 1,
+			'/socialmedia_post': 1
+		};
+		return levels[page];
+	},
+
 	timelineFor: function(status, timestamp, department) {
 		let percentages = {
 			'Submitted': '0',
@@ -87,5 +148,4 @@ module.exports = {
 		];
 
 	}
-
 };

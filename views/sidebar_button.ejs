@@ -1,0 +1,9 @@
+<%if (authLevel >= minAuth ) { %>
+	<li class="nav-item" role="presentation">
+		<a class="nav-link " href="<%= link %>">
+			<i class="fas fa-<%= icon %>"></i>
+			<span><%= title %></span>
+		</a>
+	</li>
+<% } %>
+

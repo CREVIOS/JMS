@@ -1,0 +1,22 @@
+<nav class="navbar navbar-dark align-items-start sidebar sidebar-dark accordion" style="background-color: rgb(214,70,74);">
+    <div class="container-fluid d-flex flex-column p-0">
+        <a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="#">
+            <div class="sidebar-brand-icon rotate-n-15"><i class="fas fa-laugh-wink"></i></div>
+            <div class="sidebar-brand-text mx-3"><span>YSJournal</span></div>
+        </a>
+        <hr class="sidebar-divider my-0">
+        <ul class="nav navbar-nav text-light" id="accordionSidebar">
+	        <%- include('sidebar_button.ejs', {authLevel: authLevel, minAuth: 0, page: page, link: 'index', title: 'The Journal', icon: 'tachometer-alt'}) %>
+	        <%- include('sidebar_button.ejs', {authLevel: authLevel, minAuth: 1, page: page, link: 'members', title: 'Members', icon: 'user'}) %>
+	        <%- include('sidebar_button.ejs', {authLevel: authLevel, minAuth: 1, page: page, link: 'articles', title: 'Articles', icon: 'file-text'}) %>
+	        <%- include('sidebar_button.ejs', {authLevel: authLevel, minAuth: 2, page: page, link: 'dept_info', title: 'Department Overview', icon: 'sitemap'}) %>
+	        <%- include('sidebar_button.ejs', {authLevel: authLevel, minAuth: 3, page: page, link: 'final_reviews', title: 'Final Reviews', icon: 'flag-checkered'}) %>
+            <%- include('sidebar_button.ejs', {authLevel: authLevel, minAuth: 4, page: page, link: 'admin_sys', title: 'Admin', icon: 'cogs'}) %>
+            <%- include('sidebar_button.ejs', {authLevel: authLevel, minAuth: 1, page: page, link: 'socialmedia_all_posts', title: 'Social Media', icon: 'paper-plane'}) %>
+            <%- include('sidebar_button.ejs', {authLevel: authLevel, minAuth: 3, page: page, link: 'https://recruitment.ysjournal.com', title: 'Recruitment', icon: 'id-card'}) %>
+        </ul>
+        <div class="text-center d-none d-md-inline">
+        	<button class="btn rounded-circle border-0" id="sidebarToggle" type="button"></button>
+        </div>
+    </div>
+</nav>
