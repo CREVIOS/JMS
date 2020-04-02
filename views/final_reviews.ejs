@@ -61,13 +61,6 @@
                         <div class="row">
                             <div class="col-md-6 text-nowrap">
                                 <div id="dataTable_length" class="dataTables_length" aria-controls="dataTable">
-                                    <label>Filter:&nbsp;
-                                    <select class="form-control form-control-sm custom-select custom-select-sm" style="width: 120px;margin: 0 20px 0 10px ;" id="statusesFilterSelector" onChange="filterBy()">
-                                        <option value="" selected="">Any Status</option>
-                                        <% for(let i = 0; i < statuses.length; i++) { %>
-                                            <option value="<%=statuses[i]%>"><%=statuses[i]%></option>
-                                        <% } %>
-                                    </select>
                                     <select class="form-control form-control-sm custom-select custom-select-sm" style="width: 114px;margin: 0 20px 0 10px;" id="subjectsFilterSelector" onChange="filterBy()">
                                         <option value="" selected="">Any Subject</option>
                                         <% for(let i = 0; i < subjects.length; i++) { %>
@@ -104,6 +97,7 @@
                                     <% for(let i = 0; i < articles.length; i++) { %>
                                     <tr class="articleRows">
                                         <td class="articleRowSearch"><%=articles[i].title%></td>
+                                        <td class="typesFilterCol" hidden><%=articles[i].type%></td>
                                         <td class="subjectsFilterCol"><%=articles[i].subject%></td>
                                         <td class="articleRowSearch"><%=articles[i].finalEditor.email%></td>
                                         <td class=""><%=articles[i].finalEditor.timestamp%></td>
@@ -137,8 +131,7 @@
         // Filtering functions here
         function filterBy() {
             let searchFilter = document.getElementById("filterSearch").value;
-            if (currentFilter("statusesFilterSelector") == "" &&
-                currentFilter("subjectsFilterSelector") == "" &&
+            if (currentFilter("subjectsFilterSelector") == "" &&
                 currentFilter("typesFilterSelector") == "" &&
                 searchFilter == "") {
                     resetFilterRows();
