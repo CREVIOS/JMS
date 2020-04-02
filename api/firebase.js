@@ -282,8 +282,7 @@ module.exports = {
 
 	getAllArticles: function(req, res) {
 		// Get all articles in the collection.
-		let articlesRef = db.collection('articles');
-		let allArticles = articlesRef.get()
+		let articlesRef = db.collection('articles').get()
 		.then(snapshot => {
 			let articlesRaw = [];
 		    snapshot.forEach(doc => {
@@ -415,6 +414,7 @@ module.exports = {
 		    	let tempData = doc.data();
 				if ((typeof tempData.timestamp !== "object" && tempData.timestamp != "")) {
 					tempData.id = doc.id;
+					if (tempData.status == "Released" || tempData.status == "Cancelled") { return; }
 					if (postOnTime(tempData.timestamp)) { tempData.color = "success"; } else { tempData.color = "warning"; }
 			    	collection.push(tempData);
 		    	}

@@ -26,7 +26,7 @@ module.exports = {
 			schedule: module.exports.currentDate(),
 			tags: 'Original Research',
 			timestamp: module.exports.currentDate(),
-			title: article.title,
+			title: "A YSJ Submission",
 			type: 'Instagram, Twitter'
 		};
 
