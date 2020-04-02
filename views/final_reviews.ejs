@@ -67,7 +67,7 @@
                                             <option value="<%=subjects[i]%>"><%=subjects[i]%></option>
                                         <% } %>
                                     </select>
-                                    <select class="form-control form-control-sm custom-select custom-select-sm" style="width: 114px;margin: 0 20px 0 10px;" id="typesFilterSelector" onChange="filterBy()">
+                                    <select class="form-control form-control-sm custom-select custom-select-sm" style="width: 150px;margin: 0 20px 0 10px;" id="typesFilterSelector" onChange="filterBy()">
                                         <option value="" selected="">Any Type</option>
                                         <% for(let i = 0; i < types.length; i++) { %>
                                             <option value="<%=types[i]%>"><%=types[i]%></option>
@@ -166,6 +166,8 @@
 
         function articleFiltered(row, column, filter) {
             let col = row.getElementsByClassName(column)[0].innerHTML;
+            col = col.replace("&amp;", "&");
+            console.log(col, filter);
             if (filter == "" || col == filter) {
                 return true;
             } else {

@@ -177,6 +177,7 @@
 
         function articleFiltered(row, column, filter) {
             let col = row.getElementsByClassName(column)[0].innerHTML;
+            col = col.replace("&amp;", "&");
             if (filter == "" || col == filter) {
                 return true;
             } else {
