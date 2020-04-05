@@ -476,6 +476,44 @@ module.exports = {
 			let addDoc = db.collection('socialmedia_posts').add(req.body).then(ref => {});
 		}
 		module.exports.socialmediaAllPosts(req, res);
+	},
+
+	signupUser: function (req, res) {	
+		var first = req.body["firstname"]; //document.getElementById("ftnm").value;
+		var last = req.body["lastname"]; //document.getElementById("ltnm").value;
+		var email = req.body["email"]; //document.getElementById("el").value;
+		var location = req.body["timezone"]; //document.getElementById("tm").value;
+		var department = req.body["department"]; //document.getElementById("ps").value;
+		var role = req.body["role"]; //document.getElementById("lv").value;
+		// var user = req.body["user"]; //document.getElementById("tt").value;
+	    var data = {
+	    	'authorizationLevel': 1,
+			'departments': [department],
+			'role': role,
+			'location': location,
+			'email': email,
+			'firstname': first,
+			'lastname': last,
+			'lastLogin': '01-01-2020',
+			'subteam': []
+	    };
+		var setDoc = db.collection('staff').add(data);
+
+		var pass = req.body["password"]; //document.getElementById("pd").value;
+		firebase.auth().createUserWithEmailAndPassword(email, pass)
+		.catch(function(error) {
+		  // Handle Errors here.
+		  var errorCode = error.code;
+		  var errorMessage = error.message;
+		  console.log(errorCode, errorMessage)
+		})
+		.then(function(userRecord) {
+		    //add hashed strings to verification
+		    var setHash = db.collection('Email-Verifications').doc(email).set({userID: email});
+			var verificationLink = "http://www.ysjournal.com/confirm_email/" + email;
+		    sendVerificationEmail(email, verificationLink);
+			res.render(path.join(__dirname+'/../views/login.ejs'), {});
+		})
 	}
 };
 

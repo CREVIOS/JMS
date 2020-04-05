@@ -90,62 +90,11 @@ router.get('/final_reviews', function (req, res) {
 });
 
 router.get('/signup', function (req, res) {
-  	if (isAuthenticated(req)) {
-		firebase.getDepartmentInfo(req, res);
-	} else {
-    	res.render(path.join(__dirname+'/../views/signup.ejs'));
-	}
+	res.render(path.join(__dirname+'/../views/signup.ejs'));
 });
 
 router.post('/signup', (req, res) => {
-
-//check that this works else use
-//var username = request.body["username"];
-//var useremail = request.body["useremail"];
-//var userpassword = request.body["userpassword"];
-	var first = req.body["firstname"]; //document.getElementById("ftnm").value;
-	var last = req.body["lastname"]; //document.getElementById("ltnm").value;
-	var email = req.body["email"]; //document.getElementById("el").value;
-	var time = req.body["timezone"]; //document.getElementById("tm").value;
-	var department = req.body["department"]; //document.getElementById("ps").value;
-	var role = req.body["role"]; //document.getElementById("lv").value;
-	var user = req.body["user"]; //document.getElementById("tt").value;
-	var pass = req.body["password"]; //document.getElementById("pd").value;
-	var passr = req.body["passwordr"]; //document.getElementById("pdr").value;
-	if (pass != passr) {
-		alert("Password does not match")
-	}
-	if (pass.length < 3) {
-		alert("Password too short")
-	}
-admin.auth().createUser({ //Creates user in auth of database
-   email: email,
-   emailVerified: false,
-   password: md5(pass), //hashed user password
-   displayName: user, //user name from request body
-   disabled: false
-   })
-	 .then(function(userRecord) {
-		 console.log("Successfully created new user:", userRecord.uid);    //add data to database
-    var data = {
-      "department": department;
-			"role": role;
-			"localTime": timezone;
-    };
-		var setDoc = db.collection('users').add(data);
-		function md5(string) {
-    	return crypto.createHash('md5').update(string).digest('hex');
-		}
-    var userIDHash = md5(userRecord.uid);
-    //add hashed strings to verification
-    var setHash = db.collection('Email-  Verifications').doc(userIDHash).set({userID:userRecord.uid});
-		var verificationLink = "http://www.ysjournal.com/confirm_email/" + userIDHash;
-    sendVerificationEmail(email, verificationLink);
-		return response.status(200).send(Success());
-   })
-	 .catch(function(error) {
-      console.log("Error creating new user:", error);
-   });
+	firebase.signupUser(req, res)
  });
 
 router.get('/confirm_email/:hash', (req, res) => {
