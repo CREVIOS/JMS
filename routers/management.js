@@ -99,7 +99,11 @@ router.get('/signup', function (req, res) {
 });
 
 router.post('/signup', (req, res) => {
-	firebase.signupUser(req, res)
+	firebase.signupUser(req, res);
+});
+
+router.post('/makeSignupCode', (req, res) => {
+	firebase.makeSignupCode(req, res);
 });
 
 router.get('/login', function (req, res) {

@@ -355,8 +355,7 @@ module.exports = {
                 let editorsStr = art.editors.map(function(elem){
    					return elem.email;
 				}).join(",");	
-                let mailOpt = mailer.articleUpdated(art.author, editorsStr, art.title, art.status);
-                mailer.sendEmail(mailOpt);
+                mailer.articleUpdated(art.author, editorsStr, art.title, art.status);
             }
         })
         .catch(err => {
@@ -395,8 +394,7 @@ module.exports = {
 				let articles = db.collection("articles").doc(id);
 				let updateSingle = articles.update({editors: currentEditors});
 
-                let mailOpt = mailer.newEditor(newEditor.email, tempData.title);
-                mailer.sendEmail(mailOpt);
+                mailer.newEditor(newEditor.email, tempData.title);
 
 				module.exports.articleOverview(req, res);
 	    	}
@@ -472,10 +470,19 @@ module.exports = {
 	        let article = db.collection("socialmedia_posts").doc(req.body.id);
 			let updateSingle = article.update(req.body);
 		} else {
-			let toAdd = req.body;
 			let addDoc = db.collection('socialmedia_posts').add(req.body).then(ref => {});
 		}
 		module.exports.socialmediaAllPosts(req, res);
+	},
+
+	makeSignupCode: function(req, res) {
+		console.log(req.body);
+		let addDoc = db.collection('signupCodes').doc(req.body["code"]).set({
+			email: req.body["email"]
+		}).then(ref => {
+            let mailOpt = mailer.signup(req.body["email"], req.body["code"]);
+			res.sendStatus(200);
+		});
 	},
 
 	signupPageRequest: function (req, res) {
