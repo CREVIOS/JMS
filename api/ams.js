@@ -56,7 +56,8 @@ module.exports = {
 			'/admin': 4,
 			'/socialmedia_all_posts': 1,
 			'/socialmedia_post': 1,
-			'/signup': 0
+			'/signup': 0,
+			'/makeSignupCode': 0
 		};
 		return levels[page];
 	},
