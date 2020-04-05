@@ -476,6 +476,62 @@ module.exports = {
 			let addDoc = db.collection('socialmedia_posts').add(req.body).then(ref => {});
 		}
 		module.exports.socialmediaAllPosts(req, res);
+	},
+
+	signupPageRequest: function (req, res) {
+		let userRef = db.collection("signupCodes").doc(req.query.code);
+		userRef.get().then(doc => {
+	    	if (!doc.exists) {
+  				res.render(path.join(__dirname + '/../views/error.ejs'), {error: "You are not allowed to signup. If you copied the link make sure you also copy the string after the /signup."});
+	    	} else {
+	    		let tempData = doc.data();
+	    		if (tempData.email == req.query.email) {
+					res.render(path.join(__dirname+'/../views/signup.ejs'));
+	    		}
+	    	}
+	  	})
+	  	.catch(err => {
+	    	console.log('Error getting code', err);
+			res.render(path.join(__dirname+'/../views/error.ejs'));
+	  	});
+	},
+
+	signupUser: function (req, res) {	
+		var first = req.body["firstname"]; //document.getElementById("ftnm").value;
+		var last = req.body["lastname"]; //document.getElementById("ltnm").value;
+		var email = req.body["email"]; //document.getElementById("el").value;
+		var location = req.body["timezone"]; //document.getElementById("tm").value;
+		var department = req.body["department"]; //document.getElementById("ps").value;
+		var role = req.body["role"]; //document.getElementById("lv").value;
+		var verification = req.body["verification"]; //document.getElementById("lv").value;
+		// var user = req.body["user"]; //document.getElementById("tt").value;
+	    var data = {
+	    	'authorizationLevel': 1,
+			'departments': [department],
+			'role': role,
+			'location': location,
+			'email': email,
+			'firstname': first,
+			'lastname': last,
+			'lastLogin': '01-01-2020',
+			'subteam': []
+	    };
+		var setDoc = db.collection('staff').add(data);
+
+		var pass = req.body["password"]; //document.getElementById("pd").value;
+		firebase.auth().createUserWithEmailAndPassword(email, pass)
+		.catch(function(error) {
+		  // Handle Errors here.
+			var errorCode = error.code;
+			var errorMessage = error.message;
+			console.log(errorCode, errorMessage)
+		})
+		.then(function(userRecord) {
+			res.render(path.join(__dirname+'/../views/login.ejs'), {});
+			//add hashed strings to verification
+		    // var setHash = db.collection('Email-Verifications').doc(email).set({userID: email});
+			// var verificationLink = "http://www.ysjournal.com/confirm_email/" + email;
+		})
 	}
 };
 
@@ -528,27 +584,3 @@ function postOnTime(date) {
 		}
 	}
 }
-
-// function signupStaff() {
-// 	// Add code to get all users
-// 	let staffRef = db.collection('staff').get()
-// 	.then(snapshot => {
-// 		let count = 0;
-// 	    snapshot.forEach(doc => {
-// 	    	count += 1;
-// 	    	let tempData = doc.data();
-// 	    		    	console.log(tempData.firstname, tempData.email);
-// 	    	firebase.auth().createUserWithEmailAndPassword(tempData.email.trim(), "RANDOMysjNewAMSv4PASS%").catch(function(error) {
-// 			  var errorCode = error.code;
-// 			  var errorMessage = error.message;
-// 			  console.log(errorCode, errorMessage, tempData.email);
-// 			});
-// 	    });
-// 	    console.log(count);
-// 	})
-// 	.catch(err => {
-// 		console.log('Error getting documents', err);
-// 	});
-// }
-
-// signupStaff();
