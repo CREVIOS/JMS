@@ -19,7 +19,7 @@ function isAuthenticated(req) {
 };
 
 function authorizedAccess(url, userLevel) {
-	let minAccess = parseInt(ams.minimumAccess(url));
+	let minAccess = parseInt(ams.minimumAccess(url.split("?")[0]));
 	if (userLevel >= minAccess) {
 		return true;
 	} else if (minAccess == 0) {
@@ -90,42 +90,17 @@ router.get('/final_reviews', function (req, res) {
 });
 
 router.get('/signup', function (req, res) {
-	res.render(path.join(__dirname+'/../views/signup.ejs'));
+	if (typeof req.query.code !== "undefined" && typeof req.query.email !== "undefined") {
+		console.log("Something")
+		firebase.signupPageRequest(req, res)
+	} else {
+	    res.render(path.join(__dirname+'/../views/error.ejs'), {error: "401"});
+	}
 });
 
 router.post('/signup', (req, res) => {
 	firebase.signupUser(req, res)
- });
-
-router.get('/confirm_email/:hash', (req, res) => {
-   var hash = request.params.hash; //hash from request
-   var hashRef = baseDB.collection('Email-Verifications').doc(hash); //Get reference on UserID
-   var getHash = hashRef.get()
-  .then(doc => {
-    if (!doc.exists) {
-       console.log('No such document!');
-    }
-		else {
-			//Get user from userID and update verification
-			admin.auth().updateUser(doc.data()['userID'], {
-         emailVerified: true
-       })
-    .then(function(userRecord) {// See the UserRecord reference doc for the contents of userRecord.
-			console.log("Successfully updated user", userRecord.toJSON());
-     var deleteDoc = db.collection('Email-Verifications').doc(hash).delete(); //Delete the email-verification document since it is no longer needed.
-		 return response.status(200).send(generateVerificationSuccessRedirect());
-	 	})
-		.catch(function(error) {
-     		console.log("Error updating user:", error);
-     		return response.status(500);
-     });
-   }})
-	 .catch(err => {
-	   console.log('Error getting document', err);
-	   return response.status(500);
-   });
- });
-
+});
 
 router.get('/login', function (req, res) {
     res.render(path.join(__dirname+'/../views/login.ejs'));

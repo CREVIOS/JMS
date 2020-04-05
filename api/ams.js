@@ -51,7 +51,7 @@ module.exports = {
 			'/final_reviews' : 2,
 			'/saveArticle': 1,
 			'/assignEditor': 2,
-			'/assognFinalEditor' : 3,
+			'/assignFinalEditor' : 3,
 			'/resetPassword': 0,
 			'/admin': 4,
 			'/socialmedia_all_posts': 1,
