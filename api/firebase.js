@@ -523,7 +523,7 @@ module.exports = {
 			'lastLogin': '01-01-2020',
 			'subteam': []
 	    };
-		var setDoc = db.collection('staff').add(data);
+		let addDoc = db.collection('staff').doc(email).set(data).then(ref => {});
 
 		var pass = req.body["password"]; //document.getElementById("pd").value;
 		firebase.auth().createUserWithEmailAndPassword(email, pass)
