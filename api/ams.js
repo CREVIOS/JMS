@@ -51,11 +51,13 @@ module.exports = {
 			'/final_reviews' : 2,
 			'/saveArticle': 1,
 			'/assignEditor': 2,
-			'/assognFinalEditor' : 3,
+			'/assignFinalEditor' : 3,
 			'/resetPassword': 0,
 			'/admin': 4,
 			'/socialmedia_all_posts': 1,
-			'/socialmedia_post': 1
+			'/socialmedia_post': 1,
+			'/signup': 0,
+			'/makeSignupCode': 0
 		};
 		return levels[page];
 	},

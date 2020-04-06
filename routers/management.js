@@ -19,7 +19,7 @@ function isAuthenticated(req) {
 };
 
 function authorizedAccess(url, userLevel) {
-	let minAccess = parseInt(ams.minimumAccess(url));
+	let minAccess = parseInt(ams.minimumAccess(url.split("?")[0]));
 	if (userLevel >= minAccess) {
 		return true;
 	} else if (minAccess == 0) {
@@ -87,6 +87,23 @@ router.get('/final_reviews', function (req, res) {
 	} else {
     	res.render(path.join(__dirname+'/../views/login.ejs'));
 	}
+});
+
+router.get('/signup', function (req, res) {
+	if (typeof req.query.code !== "undefined" && typeof req.query.email !== "undefined") {
+		console.log("Something")
+		firebase.signupPageRequest(req, res)
+	} else {
+	    res.render(path.join(__dirname+'/../views/error.ejs'), {error: "401"});
+	}
+});
+
+router.post('/signup', (req, res) => {
+	firebase.signupUser(req, res);
+});
+
+router.post('/makeSignupCode', (req, res) => {
+	firebase.makeSignupCode(req, res);
 });
 
 router.get('/login', function (req, res) {

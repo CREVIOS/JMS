@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <link rel="icon" href="icon.png">
+    <title>Signup - YSJ</title>
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <link href="/assets/css/signup.css" rel="stylesheet"/>
+  </head>
+  <body>
+    <div class="body"></div>
+		<div class="grad"></div>
+		<div class="header">
+			<a href="https://ysjournal.com/"><div>Young<span>Scientist</span></div></a>
+		</div>
+		<br>
+    <div class="menu-button"><i class="zmdi zmdi-share"></i>
+	      <a href="#"><i class="zmdi zmdi-twitter"></i></a>
+	      <a href="#"><i class="zmdi zmdi-google-plus"></i></a>
+	      <a href="#"><i class="zmdi zmdi-codepen"></i>	</a>
+    </div>
+
+		<form name="signup" id="signup" class="signup" action="/signup" method="POST">
+        <input id="ftnm" type="firstname" placeholder="firstname" name="firstname"><br>
+        <input id="ltnm" type="lastname" placeholder="lastname" name="lastname"><br>
+        <input id="el" type="email" placeholder="email" name="email"><br>
+<!-- 				<input id="tt" type="text" placeholder="username" name="user" maxlength="20"><br>-->
+				<input id="pd" type="password" placeholder="password" name="password"><br>
+				<input id="pdr" type="password" placeholder="confirm password" name="passwordr"><br>
+				<input id="tm" type="text" placeholder="location" name="timezone"><br>
+				<div class="listsel">
+					<select id="ps" name="department" multiple>
+						<option>Astrophysics</option>
+						<option>Biochemistry</option>
+						<option>Biology</option>
+						<option>Chemistry</option>
+						<option selected>Computer Science</option>
+						<option>Engineering</option>
+						<option>Environmental & Earth Science</option>
+						<option>Math</option>
+						<option>Medicine</option>
+						<option>Physics</option>
+						<option>Policy & Ethics</option>
+						<option>PR & Marketing</option>
+					</select>
+				</div>
+				<div class="listsel">
+					<select id="lv" name="role">
+						<option selected>Junior Editor</option>
+						<option>Senior Editor</option>
+						<option>Executive Editor</option>
+					</select>
+				</div>
+
+				<input id="subut" type="submit" value="Enter">
+				<!--<div id="subut"></div>-->
+	        <h1>have an account? <a href="/login">sign in</a></h1>
+		</form>
+  </body>
+</html>
