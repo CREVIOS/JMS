@@ -228,13 +228,8 @@ module.exports = {
 			let articlesRaw = [];
 		    snapshot.forEach(doc => {
 		    	let tempData = doc.data();
-				if ((typeof tempData.timestamp !== "object" && tempData.timestamp != "") &&
-					tempData.status != "Published" &&
-					tempData.status != "Failed Data Check" &&
-					tempData.status != "Rejected" &&
-					tempData.status != "DUPLICATE") {
+				if ((typeof tempData.timestamp !== "object" && tempData.timestamp != "")) {
 					tempData.id = doc.id;
-					tempData.editors
 					for (var i = tempData.editors.length - 1; i >= 0; i--) {
 						if (tempData.editors[i].type == "final") {
 							tempData.finalEditor = {email: tempData.editors[i].email, timestamp: tempData.editors[i].timestamp};
@@ -245,8 +240,11 @@ module.exports = {
 							}
 							break;
 						}
+					}
+					if (typeof finalEditor == "undefined") {
 						tempData.finalEditor = {email: "", timestamp: ""};
 					}
+
 					if (tempData.finalEditor.email == "") {
 						tempData.color = "warning";
 					}
@@ -284,8 +282,7 @@ module.exports = {
 
 	getAllArticles: function(req, res) {
 		// Get all articles in the collection.
-		let articlesRef = db.collection('articles');
-		let allArticles = articlesRef.get()
+		let articlesRef = db.collection('articles').get()
 		.then(snapshot => {
 			let articlesRaw = [];
 		    snapshot.forEach(doc => {
@@ -415,6 +412,7 @@ module.exports = {
 		    	let tempData = doc.data();
 				if ((typeof tempData.timestamp !== "object" && tempData.timestamp != "")) {
 					tempData.id = doc.id;
+					if (tempData.status == "Released" || tempData.status == "Cancelled") { return; }
 					if (postOnTime(tempData.timestamp)) { tempData.color = "success"; } else { tempData.color = "warning"; }
 			    	collection.push(tempData);
 		    	}

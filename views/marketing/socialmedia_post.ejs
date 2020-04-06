@@ -33,9 +33,9 @@
                         <input type="hidden" name="id" value="<%=post.id%>">
                         <h2 class="section-heading mb-4" style="align-content: center;">
                             <input placeholder="Twitter? Instagram?" class="section-heading-upper text-center" type="text" name="type" value="<%= post.type %>" style="width:100%; background-color: transparent; border-color: transparent;">
-                            <textarea rows="1" placeholder="Title Here" class="section-heading-lower text-center" type="text" name="title" style="width:100%; background-color: transparent; border-color: transparent; text-transform: uppercase;"><%= post.title %></textarea>
+                            <textarea id="title" rows="1" placeholder="Title Here" class="section-heading-lower text-center" type="text" name="title" style="width:100%; background-color: transparent; border-color: transparent; text-transform: uppercase;"><%= post.title %></textarea>
                         </h2>
-                        <textarea placeholder="Write the content of the post here" name="content" class="mb-3" style="width:100%; height: 100%; padding: 0 0 0 0; background-color: transparent; border-color: transparent;"><%= post.content %></textarea>
+                        <textarea id="content" placeholder="Write the content of the post here" name="content" class="mb-3" style="width:100%; height: 100%; padding: 0 0 0 0; background-color: transparent; border-color: transparent;"><%= post.content %></textarea>
                         <div class="mx-auto intro-button">
                             <button class="btn btn-primary d-inline-block mx-auto btn-xl">Save</button>
                             <input class="btn btn-primary d-inline-block mx-auto btn-xl" type="file" name="imageId" accept="image/x-png,image/gif,image/jpeg">
@@ -104,7 +104,8 @@
     <script src="assets_2/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets_2/js/current-day.js"></script>
     <script type="text/javascript">
-        $("textarea").height( $("textarea")[0].scrollHeight );
+        $("#title").height( $("#title")[0].scrollHeight );
+        $("#content").height( $("#content")[0].scrollHeight );
     </script>
 </body>
 
