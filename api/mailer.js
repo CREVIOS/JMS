@@ -2,14 +2,25 @@ var nodemailer = require('nodemailer');
 // var transporter = nodemailer.createTransport('smtps://user%40gmail.com:pass@smtp.gmail.com');
 require('dotenv').config()
 var transporter = nodemailer.createTransport("SMTP", {
-service: "gmail",
-auth: {
-    user: "process.env.MAILER_EMAIL",
-    pass: "process.env.MAILER_PASSWORD"
-}
+    service: "gmail",
+    auth: {
+        user: process.env.MAILER_EMAIL,
+        pass: process.env.MAILER_PASSWORD
+    }
 });
 
 module.exports = {
+    signup: function(email, code) {
+        var mailOptions = {
+            from: '"YSJournal" <submissions@ysjournal.com', // sender address
+            to: email,
+            subject: 'Welcome to the YSJ', // Subject line
+            html: '<p>Hi,<br>We signed you up to our Journal Management System (JMS). Please click on the following link to complete your registration. If you encounter technical issues please contact technicalissues@ysjournal.com. <br> <a href="manage.ysjournal.com/signup?code=' + code +'&email=' + email + '">manage.ysjournal.com/signup?code=' + code +'&email=' + email + '</a></p>' // html body
+        };
+        module.exports.sendEmail(mailOptions);
+        console.log("Email for code sent to" + email);
+    },
+
     // setup e-mail data with unicode symbols
     articleUpdated: function(author, editor, article, status) {
         var mailOptions = {

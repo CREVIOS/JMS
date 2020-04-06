@@ -228,13 +228,8 @@ module.exports = {
 			let articlesRaw = [];
 		    snapshot.forEach(doc => {
 		    	let tempData = doc.data();
-				if ((typeof tempData.timestamp !== "object" && tempData.timestamp != "") &&
-					tempData.status != "Published" &&
-					tempData.status != "Failed Data Check" &&
-					tempData.status != "Rejected" &&
-					tempData.status != "DUPLICATE") {
+				if ((typeof tempData.timestamp !== "object" && tempData.timestamp != "")) {
 					tempData.id = doc.id;
-					tempData.editors
 					for (var i = tempData.editors.length - 1; i >= 0; i--) {
 						if (tempData.editors[i].type == "final") {
 							tempData.finalEditor = {email: tempData.editors[i].email, timestamp: tempData.editors[i].timestamp};
@@ -245,8 +240,11 @@ module.exports = {
 							}
 							break;
 						}
+					}
+					if (typeof finalEditor == "undefined") {
 						tempData.finalEditor = {email: "", timestamp: ""};
 					}
+
 					if (tempData.finalEditor.email == "") {
 						tempData.color = "warning";
 					}
@@ -284,8 +282,7 @@ module.exports = {
 
 	getAllArticles: function(req, res) {
 		// Get all articles in the collection.
-		let articlesRef = db.collection('articles');
-		let allArticles = articlesRef.get()
+		let articlesRef = db.collection('articles').get()
 		.then(snapshot => {
 			let articlesRaw = [];
 		    snapshot.forEach(doc => {
@@ -355,8 +352,7 @@ module.exports = {
                 let editorsStr = art.editors.map(function(elem){
    					return elem.email;
 				}).join(",");	
-                let mailOpt = mailer.articleUpdated(art.author, editorsStr, art.title, art.status);
-                mailer.sendEmail(mailOpt);
+                mailer.articleUpdated(art.author, editorsStr, art.title, art.status);
             }
         })
         .catch(err => {
@@ -395,8 +391,7 @@ module.exports = {
 				let articles = db.collection("articles").doc(id);
 				let updateSingle = articles.update({editors: currentEditors});
 
-                let mailOpt = mailer.newEditor(newEditor.email, tempData.title);
-                mailer.sendEmail(mailOpt);
+                mailer.newEditor(newEditor.email, tempData.title);
 
 				module.exports.articleOverview(req, res);
 	    	}
@@ -417,6 +412,7 @@ module.exports = {
 		    	let tempData = doc.data();
 				if ((typeof tempData.timestamp !== "object" && tempData.timestamp != "")) {
 					tempData.id = doc.id;
+					if (tempData.status == "Released" || tempData.status == "Cancelled") { return; }
 					if (postOnTime(tempData.timestamp)) { tempData.color = "success"; } else { tempData.color = "warning"; }
 			    	collection.push(tempData);
 		    	}
@@ -472,10 +468,75 @@ module.exports = {
 	        let article = db.collection("socialmedia_posts").doc(req.body.id);
 			let updateSingle = article.update(req.body);
 		} else {
-			let toAdd = req.body;
 			let addDoc = db.collection('socialmedia_posts').add(req.body).then(ref => {});
 		}
 		module.exports.socialmediaAllPosts(req, res);
+	},
+
+	makeSignupCode: function(req, res) {
+		console.log(req.body);
+		let addDoc = db.collection('signupCodes').doc(req.body["code"]).set({
+			email: req.body["email"]
+		}).then(ref => {
+            let mailOpt = mailer.signup(req.body["email"], req.body["code"]);
+			res.sendStatus(200);
+		});
+	},
+
+	signupPageRequest: function (req, res) {
+		let userRef = db.collection("signupCodes").doc(req.query.code);
+		userRef.get().then(doc => {
+	    	if (!doc.exists) {
+  				res.render(path.join(__dirname + '/../views/error.ejs'), {error: "You are not allowed to signup. If you copied the link make sure you also copy the string after the /signup."});
+	    	} else {
+	    		let tempData = doc.data();
+	    		if (tempData.email == req.query.email) {
+					res.render(path.join(__dirname+'/../views/signup.ejs'));
+	    		}
+	    	}
+	  	})
+	  	.catch(err => {
+	    	console.log('Error getting code', err);
+			res.render(path.join(__dirname+'/../views/error.ejs'));
+	  	});
+	},
+
+	signupUser: function (req, res) {	
+		var first = req.body["firstname"]; //document.getElementById("ftnm").value;
+		var last = req.body["lastname"]; //document.getElementById("ltnm").value;
+		var email = req.body["email"]; //document.getElementById("el").value;
+		var location = req.body["timezone"]; //document.getElementById("tm").value;
+		var department = req.body["department"]; //document.getElementById("ps").value;
+		var role = req.body["role"]; //document.getElementById("lv").value;
+		var verification = req.body["verification"]; //document.getElementById("lv").value;
+		// var user = req.body["user"]; //document.getElementById("tt").value;
+	    var data = {
+	    	'authorizationLevel': 1,
+			'departments': [department],
+			'role': role,
+			'location': location,
+			'email': email,
+			'firstname': first,
+			'lastname': last,
+			'lastLogin': '01-01-2020',
+			'subteam': []
+	    };
+		let addDoc = db.collection('staff').doc(email).set(data).then(ref => {});
+
+		var pass = req.body["password"]; //document.getElementById("pd").value;
+		firebase.auth().createUserWithEmailAndPassword(email, pass)
+		.catch(function(error) {
+		  // Handle Errors here.
+			var errorCode = error.code;
+			var errorMessage = error.message;
+			console.log(errorCode, errorMessage)
+		})
+		.then(function(userRecord) {
+			res.render(path.join(__dirname+'/../views/login.ejs'), {});
+			//add hashed strings to verification
+		    // var setHash = db.collection('Email-Verifications').doc(email).set({userID: email});
+			// var verificationLink = "http://www.ysjournal.com/confirm_email/" + email;
+		})
 	}
 };
 
@@ -528,27 +589,3 @@ function postOnTime(date) {
 		}
 	}
 }
-
-// function signupStaff() {
-// 	// Add code to get all users
-// 	let staffRef = db.collection('staff').get()
-// 	.then(snapshot => {
-// 		let count = 0;
-// 	    snapshot.forEach(doc => {
-// 	    	count += 1;
-// 	    	let tempData = doc.data();
-// 	    		    	console.log(tempData.firstname, tempData.email);
-// 	    	firebase.auth().createUserWithEmailAndPassword(tempData.email.trim(), "RANDOMysjNewAMSv4PASS%").catch(function(error) {
-// 			  var errorCode = error.code;
-// 			  var errorMessage = error.message;
-// 			  console.log(errorCode, errorMessage, tempData.email);
-// 			});
-// 	    });
-// 	    console.log(count);
-// 	})
-// 	.catch(err => {
-// 		console.log('Error getting documents', err);
-// 	});
-// }
-
-// signupStaff();
