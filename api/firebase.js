@@ -273,6 +273,40 @@ module.exports = {
 		});
 	},
 
+	getArchive: function(req, res) {
+		// Get all articles in the collection.
+		let articlesRef = db.collection('articlesArchive').get()
+		.then(snapshot => {
+			let articlesRaw = [];
+		    snapshot.forEach(doc => {
+		    	let tempData = doc.data();
+				if ((typeof tempData.timestamp !== "object" && tempData.timestamp != "")) {
+					tempData.id = doc.id;
+			    	articlesRaw.push(tempData);
+		    	}
+		    });
+
+			articlesRaw.sort(function(a,b){
+				let bDates = b.timestamp.split("-");
+				let aDates = a.timestamp.split("-");
+				let bDate = new Date(bDates[2], bDates[1]-1, bDates[0]);
+				let aDate = new Date(aDates[2], aDates[1]-1, aDates[0]);
+			  	return bDate - aDate;
+			});
+
+    		res.render(path.join(__dirname+'/../views/archive.ejs'), {articles : articlesRaw,
+	    																	displayName: req.session.authenticatedUser,
+	    																	authLevel: req.session.authenticatedUserLevel,
+	    																	statuses: ams.articleStatuses(),
+	    																	types: ams.articleTypes(),
+	    																	subjects: ams.subjects()});
+		})
+		.catch(err => {
+			console.log('Error getting documents', err);
+    		res.render(path.join(__dirname+'/../views/error.ejs'));
+		});
+	},
+
 	createArticle: function(object) {
 		// Add a new document with a generated id.
 		let addDoc = db.collection('articles').add(object).then(ref => {
@@ -319,10 +353,15 @@ module.exports = {
 	},
 
 	articleOverview: function(req, res) {
-		let userRef = db.collection("articles").doc(req.query.id);
-		let getDoc = userRef.get()
-	  	.then(doc => {
+		let collection = "articles";
+		if (req.query.archive == "true") {
+			collection = "articlesArchive";
+		}
+		console.log(collection);
+		let userRef = db.collection(collection).doc(req.query.id);
+		userRef.get().then(doc => {
 	    	if (!doc.exists) {
+	    		console.log('Error getting document');
   				res.render(path.join(__dirname+'/../views/error.ejs'));
 	    	} else {
 	    		let tempData = doc.data();
@@ -333,7 +372,8 @@ module.exports = {
 	    		res.render(path.join(__dirname+'/../views/article_overview.ejs'), { displayName: req.session.authenticatedUser,
 	    																			authLevel: req.session.authenticatedUserLevel,
 	    																			article: tempData,
-	    																			statuses: statuses });
+	    																			statuses: statuses,
+	    																			locked: (req.query.archive == "true")});
 	    	}
 	  	})
 	  	.catch(err => {
