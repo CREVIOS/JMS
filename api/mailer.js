@@ -15,7 +15,7 @@ module.exports = {
             from: '"YSJournal" <submissions@ysjournal.com', // sender address
             to: email,
             subject: 'Welcome to the YSJ', // Subject line
-            html: '<p>Hi,<br>We signed you up to our Journal Management System (JMS). Please click on the following link to complete your registration. If you encounter technical issues please contact technicalissues@ysjournal.com. <br> <a href="manage.ysjournal.com/signup?code=' + code +'&email=' + email + '">manage.ysjournal.com/signup?code=' + code +'&email=' + email + '</a></p>' // html body
+            html: '<p>Hi,<br>We signed you up to our Journal Management System (JMS). Please click on the following link to complete your registration. <br> https://manage.ysjournal.com/signup?code=' + code +'&email=' + email + '<br> If you encounter technical issues please contact technicalissues@ysjournal.com.</p>' // html body
         };
         module.exports.sendEmail(mailOptions);
         console.log("Email for code sent to" + email);

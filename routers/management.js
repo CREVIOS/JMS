@@ -89,6 +89,14 @@ router.get('/final_reviews', function (req, res) {
 	}
 });
 
+router.get('/archive', function (req, res) {
+  	if (isAuthenticated(req)) {
+		firebase.getArchive(req, res);
+	} else {
+    	res.render(path.join(__dirname+'/../views/login.ejs'));
+	}
+});
+
 router.get('/signup', function (req, res) {
 	if (typeof req.query.code !== "undefined" && typeof req.query.email !== "undefined") {
 		console.log("Something")

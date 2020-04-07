@@ -57,7 +57,8 @@ module.exports = {
 			'/socialmedia_all_posts': 1,
 			'/socialmedia_post': 1,
 			'/signup': 0,
-			'/makeSignupCode': 0
+			'/makeSignupCode': 0,
+			'/archive': 1
 		};
 		return levels[page];
 	},
